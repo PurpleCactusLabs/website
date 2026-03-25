@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Notion CRM Sidebar</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --deep-night: #0D0B14;
+      --pcl-purple: #A855F7;
+      --muted-violet: #6B6880;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--deep-night);
+      color: #fff;
+      line-height: 1.8;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      border-bottom: 1px solid rgba(168,85,247,0.12);
+      background: rgba(13,11,20,0.92);
+    }
+    .nav-logo-img { height: 64px; width: auto; display: block; }
+    .content {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+    h1 { font-size: 2rem; margin-bottom: 8px; }
+    .updated { color: var(--muted-violet); font-size: 14px; margin-bottom: 48px; }
+    h2 { font-size: 1.1rem; font-weight: 600; margin: 40px 0 12px; color: var(--pcl-purple); }
+    p { color: rgba(255,255,255,0.8); margin-bottom: 16px; }
+    ul { color: rgba(255,255,255,0.8); padding-left: 24px; margin-bottom: 16px; }
+    ul li { margin-bottom: 8px; }
+    a { color: var(--pcl-purple); }
+    footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--muted-violet);
+      font-size: 13px;
+      border-top: 1px solid rgba(168,85,247,0.12);
+    }
+    footer a { color: var(--muted-violet); text-decoration: none; margin: 0 12px; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/"><img src="PCL_neon_logo_dark.svg" alt="Purple Cactus Labs" class="nav-logo-img" /></a>
+  </nav>
+
+  <div class="content">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: March 22, 2026</p>
+
+    <p>This Privacy Policy describes how Purple Cactus Labs ("we", "us", or "our") handles information in connection with the Notion CRM Sidebar Chrome extension ("the Extension"). We take privacy seriously and have designed the Extension to minimize data collection.</p>
+
+    <h2>What data the Extension accesses</h2>
+    <p>The Extension reads the email address of the sender of the currently open Gmail thread. This email address is used solely to query your Notion database for a matching contact record. No email content is read, stored, or transmitted.</p>
+
+    <h2>What data we store on our servers</h2>
+    <p>We store only what's needed to manage your license and subscription. We do not store your Notion API token, your Notion database contents, or any Gmail data.</p>
+
+    <h2>Your Notion API token</h2>
+    <p>Your Notion integration token is stored locally in your browser's secure extension storage. It is never transmitted to our servers. All Notion API requests are made directly from your browser to Notion's API.</p>
+
+    <h2>Gmail data</h2>
+    <p>The Extension reads the sender's email address from the currently open Gmail thread in order to perform a Notion database lookup. This data is used only in real time and is never stored, logged, or transmitted to our servers.</p>
+
+    <h2>Payments</h2>
+    <p>All payments are processed by Stripe. We do not store credit card or payment information. Stripe's privacy policy applies to payment data: <a href="https://stripe.com/privacy" target="_blank">stripe.com/privacy</a>.</p>
+
+    <h2>Third-party services</h2>
+    <p>We work with trusted third-party service providers for payment processing, transactional email delivery, and secure data storage. These providers are contractually obligated to handle your data securely and only for the purposes we specify. Stripe is used for all payment processing — their privacy policy is available at <a href="https://stripe.com/privacy" target="_blank">stripe.com/privacy</a>.</p>
+
+    <h2>Data retention</h2>
+    <p>Customer and license records are retained for as long as your subscription is active or as required for legal and accounting purposes. You may request deletion of your data by emailing <a href="mailto:hello@purplecactus.io">hello@purplecactus.io</a>.</p>
+
+    <h2>Children's privacy</h2>
+    <p>The Extension is not directed at children under 13. We do not knowingly collect data from children.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>We may update this policy from time to time. Material changes will be communicated via email to active subscribers.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about this policy? Email us at <a href="mailto:hello@purplecactus.io">hello@purplecactus.io</a>.</p>
+  </div>
+
+  <footer>
+    <a href="/">Home</a>
+    <a href="/terms">Terms of Service</a>
+    <a href="mailto:hello@purplecactus.io">hello@purplecactus.io</a>
+    <p style="margin-top:12px;">© 2026 Purple Cactus Labs</p>
+  </footer>
+
+</body>
+</html>
