@@ -3,21 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Notion CRM Sidebar — Your CRM, inside Gmail</title>
-  <meta name="description" content="See your Notion CRM data instantly, without leaving Gmail. $5/month." />
+  <title>Purple Cactus Labs</title>
+  <meta name="description" content="Independent software studio. Focused tools for solopreneurs and startup teams." />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --deep-night: #0D0B14;
-      --dark-violet: #1A1528;
-      --pcl-purple: #A855F7;
+      --deep-night:   #0D0B14;
+      --dark-violet:  #1A1528;
+      --pcl-purple:   #A855F7;
       --neon-fuchsia: #D946EF;
-      --deep-purple: #7C3AED;
-      --warm-beige: #FAF8F5;
-      --warm-sand: #F0EDE8;
-      --warm-border: #E2DDD8;
-      --ink: #1A1A2E;
+      --deep-purple:  #7C3AED;
+      --ink:          #1A1A2E;
       --muted-violet: #6B6880;
     }
 
@@ -30,642 +27,507 @@
       line-height: 1.6;
     }
 
-    /* NAV */
+    /* ── FIXED LOGO BACKGROUND ──────────────────────────────── */
+    /* Sits behind everything — content layers scroll over it   */
+    .logo-stage {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--deep-night);
+      z-index: 0;
+      gap: 40px;
+    }
+
+    .hero-logo {
+      width: min(900px, 88vw);
+      opacity: 0;
+      /* Logo buzzes in AFTER tagline has settled */
+      animation: neon-on 2.6s ease-out 2s forwards;
+    }
+
+    /* Tagline — appears FIRST at viewport center, then slides DOWN to reveal logo */
+    .hero-tagline {
+      font-size: clamp(28px, 4.5vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      text-align: center;
+      padding: 0 24px;
+      opacity: 0;
+      transform: translateY(-22vh);
+      transition: opacity 1s ease, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .hero-tagline.visible {
+      opacity: 1;
+      transform: translateY(0);
+      text-shadow: 0 0 40px rgba(168,85,247,0.2), 0 0 80px rgba(168,85,247,0.08);
+      color: #fff;
+    }
+
+    .hero-tagline .notion-word {
+      display: inline-block;
+      /* Bright neon — light enough to pop without smudging */
+      background: linear-gradient(135deg, #FF88FF, #CC55FF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .hero-tagline .notion-word.visible {
+      opacity: 1;
+    }
+
+    .hero-tagline .notion-word.pulsing {
+      animation: notion-neon-pulse 3.8s ease-in-out infinite;
+    }
+
+    .scroll-cue {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.2);
+      font-size: 20px;
+      text-decoration: none;
+      animation: tagline-in 0.8s ease-out 3s forwards, bob 2s ease-in-out 3.8s infinite;
+    }
+
+    /* Neon turning on — flicker then hold */
+    @keyframes neon-on {
+      0%   { opacity: 0;   filter: drop-shadow(0 0 0px transparent); }
+      8%   { opacity: 0.4; filter: drop-shadow(0 0 4px #A855F7) drop-shadow(0 0 8px #D946EF); }
+      12%  { opacity: 0.1; filter: drop-shadow(0 0 1px #A855F7); }
+      18%  { opacity: 0.7; filter: drop-shadow(0 0 12px #A855F7) drop-shadow(0 0 24px #D946EF); }
+      22%  { opacity: 0.2; filter: drop-shadow(0 0 2px #A855F7); }
+      30%  { opacity: 1;   filter: drop-shadow(0 0 18px #A855F7) drop-shadow(0 0 36px #D946EF); }
+      100% { opacity: 1;   filter: drop-shadow(0 0 14px #A855F7) drop-shadow(0 0 28px rgba(217,70,239,0.45)); }
+    }
+
+    /* Subtle ongoing glow pulse */
+    @keyframes neon-pulse {
+      0%, 100% { opacity: 1; filter: drop-shadow(0 0 14px #A855F7) drop-shadow(0 0 28px rgba(217,70,239,0.45)); }
+      50%       { opacity: 1; filter: drop-shadow(0 0 22px #A855F7) drop-shadow(0 0 44px rgba(217,70,239,0.65)); }
+    }
+
+    .hero-logo.pulsing {
+      animation: neon-pulse 3.5s ease-in-out infinite;
+    }
+
+    /* Notion word neon flicker — using filter (works on gradient text) */
+    @keyframes notion-neon-flicker {
+      0%   { opacity: 0;   filter: drop-shadow(0 0 0px transparent); }
+      10%  { opacity: 0.5; filter: drop-shadow(0 0 8px #A855F7) drop-shadow(0 0 16px #D946EF); }
+      15%  { opacity: 0.1; filter: drop-shadow(0 0 2px #A855F7); }
+      28%  { opacity: 0.9; filter: drop-shadow(0 0 14px #A855F7) drop-shadow(0 0 28px #D946EF); }
+      33%  { opacity: 0.3; filter: drop-shadow(0 0 3px #A855F7); }
+      50%  { opacity: 1;   filter: drop-shadow(0 0 12px #A855F7) drop-shadow(0 0 24px #D946EF); }
+      100% { opacity: 1;   filter: drop-shadow(0 0 10px #A855F7) drop-shadow(0 0 22px #D946EF) drop-shadow(0 0 40px rgba(217,70,239,0.5)); }
+    }
+
+    @keyframes notion-neon-pulse {
+      0%, 100% { opacity: 1; filter: drop-shadow(0 0 10px #A855F7) drop-shadow(0 0 22px #D946EF) drop-shadow(0 0 40px rgba(217,70,239,0.5)); }
+      50%       { opacity: 1; filter: drop-shadow(0 0 18px #A855F7) drop-shadow(0 0 36px #D946EF) drop-shadow(0 0 60px rgba(217,70,239,0.7)); }
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ── HERO SPACER ────────────────────────────────────────── */
+    /* Transparent — just holds the viewport height so content  */
+    /* starts below, revealing the fixed logo behind it         */
+    .hero-spacer {
+      height: 100vh;
+      position: relative;
+      z-index: 1;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    /* ── CONTENT LAYER ──────────────────────────────────────── */
+    /* Sits above the fixed logo — scrolls over it              */
+    .content {
+      position: relative;
+      z-index: 2;
+      background: var(--deep-night);
+    }
+
+    /* ── NAV (inside content layer) ─────────────────────────── */
     nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20px 48px;
-      border-bottom: 1px solid rgba(168,85,247,0.12);
+      padding: 24px 48px;
+      border-bottom: 1px solid rgba(168,85,247,0.1);
       position: sticky;
       top: 0;
-      background: rgba(13,11,20,0.92);
+      background: rgba(13,11,20,0.95);
       backdrop-filter: blur(12px);
-      z-index: 100;
+      z-index: 10;
     }
 
-    .nav-logo {
+    .nav-wordmark {
       font-size: 15px;
       font-weight: 600;
-      color: #fff;
+      color: rgba(255,255,255,0.7);
       letter-spacing: 0.01em;
     }
 
-    .nav-logo span {
-      color: var(--pcl-purple);
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
     }
 
-    .nav-cta {
-      background: var(--pcl-purple);
-      color: #fff;
-      padding: 8px 20px;
-      border-radius: 7px;
+    .nav-links a {
+      color: rgba(255,255,255,0.45);
       text-decoration: none;
       font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: #fff; }
+
+    .nav-cta {
+      background: var(--pcl-purple) !important;
+      color: #fff !important;
+      padding: 8px 18px;
+      border-radius: 7px;
+      font-size: 14px;
       font-weight: 600;
-      box-shadow: 0 0 18px rgba(168,85,247,0.28);
-      transition: box-shadow 0.2s, transform 0.2s;
+      box-shadow: 0 0 16px rgba(168,85,247,0.28);
+      transition: box-shadow 0.2s, transform 0.2s !important;
     }
 
     .nav-cta:hover {
-      box-shadow: 0 0 28px rgba(168,85,247,0.45);
-      transform: translateY(-1px);
+      box-shadow: 0 0 28px rgba(168,85,247,0.5) !important;
+      transform: translateY(-1px) !important;
     }
 
-    /* NOTION WORD HIGHLIGHT */
-    .notion-word {
-      background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.85) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-style: italic;
-    }
-
-    /* NAV LOGO IMAGE */
-    .nav-logo-img {
-      height: 64px;
-      width: auto;
-      display: block;
-    }
-
-    /* HERO */
-    .hero {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 96px 48px 72px;
-      text-align: center;
-    }
-
-    .badge {
-      display: inline-block;
-      background: rgba(168,85,247,0.14);
-      color: var(--pcl-purple);
-      border: 1px solid rgba(168,85,247,0.2);
-      border-radius: 99px;
-      padding: 5px 14px;
-      font-size: 13px;
-      font-weight: 500;
-      margin-bottom: 28px;
-      letter-spacing: 0.02em;
-    }
-
-    h1 {
-      font-size: clamp(36px, 5vw, 60px);
-      font-weight: 700;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      margin-bottom: 24px;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    h1 em {
-      font-style: normal;
-      background: linear-gradient(135deg, var(--neon-fuchsia), var(--pcl-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-sub {
-      font-size: 19px;
-      color: rgba(255,255,255,0.62);
-      max-width: 540px;
-      margin: 0 auto 40px;
-      line-height: 1.6;
-    }
-
-    .hero-actions {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 72px;
-    }
-
-    .btn-primary {
-      background: var(--pcl-purple);
-      color: #fff;
-      padding: 14px 32px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 16px;
-      font-weight: 600;
-      box-shadow: 0 0 24px rgba(168,85,247,0.32);
-      transition: box-shadow 0.2s, transform 0.2s;
-    }
-
-    .btn-primary:hover {
-      box-shadow: 0 0 36px rgba(168,85,247,0.5);
-      transform: translateY(-1px);
-    }
-
-    .btn-secondary {
-      color: rgba(255,255,255,0.7);
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 500;
-      padding: 14px 24px;
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 8px;
-      transition: border-color 0.2s, color 0.2s;
-    }
-
-    .btn-secondary:hover {
-      border-color: rgba(168,85,247,0.4);
-      color: #fff;
-    }
-
-    /* HERO IMAGE — browser mockup */
-    .hero-browser {
-      max-width: 900px;
-      margin: 0 auto;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid rgba(168,85,247,0.22);
-      box-shadow:
-        0 0 0 1px rgba(0,0,0,0.3),
-        0 0 80px rgba(168,85,247,0.18),
-        0 0 160px rgba(168,85,247,0.08),
-        0 40px 80px rgba(0,0,0,0.5);
-      transform: perspective(1200px) rotateX(3deg);
-      transform-origin: center top;
-    }
-
-    .browser-chrome {
-      background: #1E1B2E;
-      border-bottom: 1px solid rgba(168,85,247,0.15);
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .browser-dots {
-      display: flex;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
-    .browser-dots span {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      display: block;
-    }
-
-    .browser-dots span:nth-child(1) { background: #FF5F56; }
-    .browser-dots span:nth-child(2) { background: #FFBD2E; }
-    .browser-dots span:nth-child(3) { background: #27C93F; }
-
-    .browser-bar {
-      flex: 1;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 5px;
-      padding: 4px 12px;
-      font-size: 12px;
-      color: rgba(255,255,255,0.3);
-      text-align: center;
-    }
-
-    .browser-body img {
-      width: 100%;
-      display: block;
-    }
-
-    /* SOCIAL PROOF */
-    .social-proof {
-      text-align: center;
-      padding: 48px;
-      color: rgba(255,255,255,0.35);
-      font-size: 13px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    /* HOW IT WORKS */
+    /* ── SECTIONS ────────────────────────────────────────────── */
     .section {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 80px 48px;
+      padding: 96px 48px;
     }
 
     .section-label {
       text-align: center;
       color: var(--pcl-purple);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .section-title {
       text-align: center;
-      font-size: clamp(28px, 3.5vw, 40px);
+      font-size: clamp(26px, 3vw, 38px);
       font-weight: 700;
       letter-spacing: -0.02em;
       margin-bottom: 56px;
     }
 
-    .steps {
+    hr {
+      border: none;
+      border-top: 1px solid rgba(168,85,247,0.08);
+    }
+
+    /* ── PRODUCTS ────────────────────────────────────────────── */
+    .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 24px;
     }
 
-    .step {
+    .product-card {
       background: var(--dark-violet);
-      border: 1px solid rgba(168,85,247,0.13);
-      border-radius: 9px;
-      padding: 32px;
+      border: 1px solid rgba(168,85,247,0.15);
+      border-radius: 14px;
+      padding: 36px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
     }
 
-    .step-number {
-      width: 36px;
-      height: 36px;
-      background: rgba(168,85,247,0.14);
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(168,85,247,0.5), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .product-card:hover {
+      border-color: rgba(168,85,247,0.4);
+      box-shadow: 0 0 48px rgba(168,85,247,0.1), 0 20px 40px rgba(0,0,0,0.3);
+      transform: translateY(-3px);
+    }
+
+    .product-card:hover::before { opacity: 1; }
+
+    .product-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(168,85,247,0.12);
       border: 1px solid rgba(168,85,247,0.2);
-      border-radius: 50%;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--pcl-purple);
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 20px;
     }
 
-    .step h3 {
-      font-size: 17px;
+    .product-chip {
+      display: inline-block;
+      background: rgba(168,85,247,0.1);
+      border: 1px solid rgba(168,85,247,0.18);
+      color: var(--pcl-purple);
+      font-size: 11px;
       font-weight: 600;
-      margin-bottom: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 99px;
+      width: fit-content;
     }
 
-    .step p {
+    .product-name {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 10px 0 6px;
+    }
+
+    .product-desc {
       font-size: 15px;
-      color: rgba(255,255,255,0.55);
-      line-height: 1.6;
+      color: rgba(255,255,255,0.48);
+      line-height: 1.65;
     }
 
-    /* FEATURES */
-    .features-grid {
+    .product-cta {
+      margin-top: auto;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--pcl-purple);
+    }
+
+    .product-card.soon {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    /* ── PHILOSOPHY ──────────────────────────────────────────── */
+    .philosophy {
+      background: rgba(168,85,247,0.025);
+      border-top: 1px solid rgba(168,85,247,0.08);
+      border-bottom: 1px solid rgba(168,85,247,0.08);
+    }
+
+    .traits {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 48px;
     }
 
-    .feature {
-      background: var(--dark-violet);
-      border: 1px solid rgba(168,85,247,0.13);
-      border-radius: 9px;
-      padding: 28px 32px;
-    }
-
-    .feature-icon {
-      font-size: 24px;
-      margin-bottom: 14px;
-    }
-
-    .feature h3 {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .feature p {
-      font-size: 14px;
-      color: rgba(255,255,255,0.52);
-      line-height: 1.6;
-    }
-
-    /* DIVIDER */
-    .divider {
-      border: none;
-      border-top: 1px solid rgba(168,85,247,0.1);
-      margin: 0 48px;
-    }
-
-    /* PRICING */
-    .pricing-wrap {
-      max-width: 480px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .pricing-card {
-      background: var(--dark-violet);
-      border: 1px solid rgba(168,85,247,0.25);
-      border-radius: 12px;
-      padding: 48px;
-      box-shadow: 0 0 48px rgba(168,85,247,0.08);
-    }
-
-    .price {
-      font-size: 56px;
+    .trait-label {
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .price sup {
-      font-size: 24px;
-      vertical-align: super;
-      font-weight: 600;
-    }
-
-    .price-period {
-      color: rgba(255,255,255,0.45);
-      font-size: 15px;
-      margin-bottom: 32px;
-    }
-
-    .pricing-features {
-      list-style: none;
-      text-align: left;
-      margin-bottom: 36px;
-    }
-
-    .pricing-features li {
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      font-size: 15px;
-      color: rgba(255,255,255,0.8);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .pricing-features li:last-child {
-      border-bottom: none;
-    }
-
-    .pricing-features li::before {
-      content: '✓';
       color: var(--pcl-purple);
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-
-    .manage-link {
-      display: block;
-      margin-top: 16px;
-      font-size: 13px;
-      color: rgba(255,255,255,0.35);
-      text-decoration: none;
-    }
-
-    .manage-link:hover {
-      color: var(--pcl-purple);
-    }
-
-    /* FAQ */
-    .faq-list {
-      max-width: 680px;
-      margin: 0 auto;
-    }
-
-    .faq-item {
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      padding: 24px 0;
-    }
-
-    .faq-item h3 {
-      font-size: 16px;
-      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       margin-bottom: 10px;
-      color: #fff;
     }
 
-    .faq-item p {
+    .trait-text {
       font-size: 15px;
-      color: rgba(255,255,255,0.52);
+      color: rgba(255,255,255,0.42);
       line-height: 1.7;
     }
 
-    /* FOOTER CTA */
-    .footer-cta {
-      text-align: center;
-      padding: 96px 48px;
-      background: linear-gradient(180deg, transparent, rgba(168,85,247,0.05));
-    }
-
-    .footer-cta h2 {
-      font-size: clamp(28px, 3.5vw, 42px);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 16px;
-    }
-
-    .footer-cta p {
-      color: rgba(255,255,255,0.52);
-      font-size: 17px;
-      margin-bottom: 36px;
-    }
-
-    /* FOOTER */
+    /* ── FOOTER ──────────────────────────────────────────────── */
     footer {
-      border-top: 1px solid rgba(168,85,247,0.1);
+      border-top: 1px solid rgba(168,85,247,0.08);
       padding: 32px 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.25);
       font-size: 13px;
     }
 
     footer a {
-      color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.25);
       text-decoration: none;
+      transition: color 0.2s;
     }
 
-    footer a:hover {
-      color: var(--pcl-purple);
-    }
+    footer a:hover { color: var(--pcl-purple); }
+    .footer-links { display: flex; gap: 24px; }
 
+    /* ── RESPONSIVE ──────────────────────────────────────────── */
     @media (max-width: 640px) {
       nav { padding: 16px 24px; }
-      .hero { padding: 64px 24px 48px; }
-      .section { padding: 60px 24px; }
-      .divider { margin: 0 24px; }
-      footer { flex-direction: column; gap: 12px; text-align: center; }
-      .hero-browser { transform: none; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .section { padding: 64px 24px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-logo">
-      <img src="PCL_neon_logo_dark.svg" alt="Purple Cactus Labs" class="nav-logo-img" />
-    </div>
-    <a href="#pricing" class="nav-cta">Get started — $5/mo</a>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="badge">Chrome Extension · Works with any Notion database</div>
-    <h1>Your <span class="notion-word">Notion</span> CRM,<br /><em>inside Gmail.</em></h1>
-    <p class="hero-sub">Stop switching tabs.<br />Start knowing who you're talking to.</p>
-    <div class="hero-actions">
-      <a href="#pricing" class="btn-primary">Start for $5/month</a>
-      <a href="#how-it-works" class="btn-secondary">See how it works →</a>
-    </div>
-
-    <!-- Browser mockup wrapper -->
-    <div class="hero-browser">
-      <div class="browser-chrome">
-        <div class="browser-dots">
-          <span></span><span></span><span></span>
-        </div>
-        <div class="browser-bar">mail.google.com</div>
-      </div>
-      <div class="browser-body">
-        <img src="hero.png" alt="Notion CRM Sidebar showing client data inside Gmail" />
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- HOW IT WORKS -->
-  <section class="section" id="how-it-works">
-    <div class="section-label">How it works</div>
-    <h2 class="section-title">Set up in 5 minutes. Works instantly.</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-number">1</div>
-        <h3>Connect your Notion database</h3>
-        <p>Paste your Notion API key and pick the database you use as a CRM. Any database works.</p>
-      </div>
-      <div class="step">
-        <div class="step-number">2</div>
-        <h3>Choose the fields you want to see</h3>
-        <p>Pick which properties to surface — name, status, lead source, related records, whatever matters to you.</p>
-      </div>
-      <div class="step">
-        <div class="step-number">3</div>
-        <h3>Open any email</h3>
-        <p>The sidebar appears automatically when Gmail detects a matching contact. Your data, in context, instantly.</p>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- FEATURES -->
-  <section class="section" id="features">
-    <div class="section-label">Features</div>
-    <h2 class="section-title">Built for people who live in their inbox.</h2>
-    <div class="features-grid">
-      <div class="feature">
-        <div class="feature-icon">⚡</div>
-        <h3>Instant lookup</h3>
-        <p>Matches sender email to your Notion database in real time. No clicks, no searching.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🗂️</div>
-        <h3>Related records</h3>
-        <p>See linked database entries — trips, deals, projects — right below the contact card.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🔧</div>
-        <h3>Fully configurable</h3>
-        <p>Choose which fields to display. Works with any Notion database schema, no changes required.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🔗</div>
-        <h3>Open in Notion</h3>
-        <p>One click takes you directly to the full record. Deep link, no hunting.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🔒</div>
-        <h3>Private by design</h3>
-        <p>Your Notion token and data never leave your browser. No third-party servers see your CRM.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🌵</div>
-        <h3>Zero bloat</h3>
-        <p>Does one thing, does it well. No dashboards, no onboarding flows, no upsells inside the tool.</p>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- PRICING -->
-  <section class="section" id="pricing">
-    <div class="section-label">Pricing</div>
-    <h2 class="section-title">Simple pricing. No surprises.</h2>
-    <div class="pricing-wrap">
-      <div class="pricing-card">
-        <div class="price"><sup>$</sup>5</div>
-        <div class="price-period">per month · cancel anytime</div>
-        <ul class="pricing-features">
-          <li>Notion CRM Sidebar Chrome extension</li>
-          <li>Connect any Notion database</li>
-          <li>Up to 4 configurable fields</li>
-          <li>Related database support</li>
-          <li>Instant email lookup</li>
-          <li>License key delivered by email</li>
-        </ul>
-        <a href="https://buy.stripe.com/8x27sM8yX9hndrv6IocZa01" class="btn-primary" style="display:block; text-align:center;">Get started</a>
-        <a href="mailto:hello@purplecactus.io" class="manage-link">Already a customer? Email us to manage your subscription →</a>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- FAQ -->
-  <section class="section" id="faq">
-    <div class="section-label">FAQ</div>
-    <h2 class="section-title">Common questions.</h2>
-    <div class="faq-list">
-      <div class="faq-item">
-        <h3>Does this work with any Notion database?</h3>
-        <p>Yes. As long as your database has an email property, the sidebar can match contacts from Gmail. You pick which database and which fields to display during setup.</p>
-      </div>
-      <div class="faq-item">
-        <h3>Is my Notion data secure?</h3>
-        <p>Your Notion API token is stored locally in your browser using Chrome's secure storage. It never passes through our servers — lookups happen directly from your browser to Notion's API.</p>
-      </div>
-      <div class="faq-item">
-        <h3>Do I need to be technical to set it up?</h3>
-        <p>No. The setup wizard walks you through connecting your Notion workspace and picking your fields. It takes about 5 minutes and requires no coding.</p>
-      </div>
-      <div class="faq-item">
-        <h3>What happens if a contact isn't in my Notion database?</h3>
-        <p>The sidebar stays out of your way. It only appears when it finds a matching record — no noise for unrecognized senders.</p>
-      </div>
-      <div class="faq-item">
-        <h3>Can I cancel anytime?</h3>
-        <p>Yes — no lock-ins, no cancellation fees. Just email us at <a href="mailto:hello@purplecactus.io" style="color: var(--pcl-purple);">hello@purplecactus.io</a> and we'll take care of it same day.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER CTA -->
-  <div class="footer-cta">
-    <h2>Stop switching tabs.<br />Start knowing who you're talking to.</h2>
-    <p>$5/month. Set up in 5 minutes. Cancel anytime.</p>
-    <a href="https://buy.stripe.com/8x27sM8yX9hndrv6IocZa01" class="btn-primary">Get started →</a>
+  <!-- FIXED LOGO STAGE — stays behind everything -->
+  <div class="logo-stage">
+    <img src="PCL_neon_logo_dark.svg" alt="Purple Cactus Labs" class="hero-logo" id="hero-logo" />
+    <div class="hero-tagline" id="hero-tagline">Beautiful tools that make<br /><span class="notion-word" id="notion-word">Notion</span> do more.</div>
+    <a href="#content" class="scroll-cue">↓</a>
   </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <div>© 2026 Purple Cactus Labs</div>
-    <div style="display:flex; gap:24px;">
-      <a href="/privacy">Privacy Policy</a>
-      <a href="/terms">Terms of Service</a>
-      <a href="mailto:hello@purplecactus.io">hello@purplecactus.io</a>
+  <!-- TRANSPARENT SPACER — shows fixed logo behind it -->
+  <div class="hero-spacer"></div>
+
+  <!-- CONTENT — scrolls over the fixed logo -->
+  <div class="content" id="content">
+
+    <!-- NAV -->
+    <nav>
+      <div class="nav-wordmark">Purple Cactus Labs</div>
+      <div class="nav-links">
+        <a href="#products">Products</a>
+        <a href="mailto:hello@purplecactus.io">Contact</a>
+        <a href="/notion-gmail-sidebar" class="nav-cta">Get Notion CRM Sidebar</a>
+      </div>
+    </nav>
+
+    <hr />
+
+    <!-- PRODUCTS -->
+    <section class="section" id="products">
+      <div class="section-label">Products</div>
+      <h2 class="section-title">What we make</h2>
+      <div class="products-grid">
+
+        <a href="/notion-gmail-sidebar" class="product-card">
+          <div class="product-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 20 Q4 14 12 14 Q20 14 20 20"/>
+            </svg>
+          </div>
+          <div>
+            <div class="product-chip">Chrome Extension</div>
+            <div class="product-name">Notion CRM Sidebar</div>
+            <div class="product-desc">See your Notion CRM data inside Gmail — automatically, alongside any email thread. No tab switching.</div>
+          </div>
+          <div class="product-cta">Learn more →</div>
+        </a>
+
+        <div class="product-card soon">
+          <div class="product-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <rect x="3" y="3" width="18" height="18" rx="3"/>
+              <line x1="12" y1="8" x2="12" y2="16"/>
+              <line x1="8" y1="12" x2="16" y2="12"/>
+            </svg>
+          </div>
+          <div>
+            <div class="product-chip">Coming Soon</div>
+            <div class="product-name">More on the way</div>
+            <div class="product-desc">We go where the problems are.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- HOW WE WORK -->
+    <div class="philosophy">
+      <div class="section">
+        <div class="traits">
+          <div>
+            <div class="trait-label">We use it too</div>
+            <div class="trait-text">Every tool starts as something we needed ourselves. We build it, use it daily, and make it good enough that anyone can.</div>
+          </div>
+          <div>
+            <div class="trait-label">Focused</div>
+            <div class="trait-text">One thing, done well. Every feature earns its place. No dashboards, no upsells, no bloat.</div>
+          </div>
+          <div>
+            <div class="trait-label">Crafted</div>
+            <div class="trait-text">Great UI isn't an afterthought — it's the product. Design is how it works, not just how it looks.</div>
+          </div>
+          <div>
+            <div class="trait-label">Priced fairly</div>
+            <div class="trait-text">We price so the build-vs-buy question isn't worth asking. You've got better things to do.</div>
+          </div>
+        </div>
+      </div>
     </div>
-  </footer>
+
+    <!-- FOOTER -->
+    <footer>
+      <div>© 2026 Purple Cactus Labs · Las Vegas, NV</div>
+      <div class="footer-links">
+        <a href="/notion-gmail-sidebar">Notion CRM Sidebar</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="mailto:hello@purplecactus.io">hello@purplecactus.io</a>
+      </div>
+    </footer>
+
+  </div><!-- /content -->
+
+  <script>
+    const logo       = document.getElementById('hero-logo');
+    const tagline    = document.getElementById('hero-tagline');
+    const notionWord = document.getElementById('notion-word');
+
+    // Step 1: tagline slides down from near-center into position
+    setTimeout(() => { tagline.classList.add('visible'); }, 400);
+
+    // Step 2: "Notion" flickers in after tagline has fully settled
+    setTimeout(() => {
+      notionWord.style.animation = 'notion-neon-flicker 1.8s ease-out forwards';
+      notionWord.addEventListener('animationend', () => {
+        notionWord.style.animation = ''; // clear inline — let .pulsing class take over
+        notionWord.style.opacity = '1';
+        notionWord.classList.add('pulsing');
+      }, { once: true });
+    }, 1400);
+
+    // Step 3: logo buzzes in after tagline has settled
+    logo.addEventListener('animationend', () => {
+      logo.style.opacity = '1';
+      logo.style.filter = 'drop-shadow(0 0 14px #A855F7) drop-shadow(0 0 28px rgba(217,70,239,0.45))';
+      logo.classList.add('pulsing');
+    });
+
+    // Scroll fade: tagline fades out as you scroll down
+    window.addEventListener('scroll', () => {
+      const fade = Math.max(0, 1 - window.scrollY / 250);
+      tagline.style.opacity = fade;
+    });
+  </script>
 
 </body>
 </html>
