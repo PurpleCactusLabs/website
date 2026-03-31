@@ -45,11 +45,10 @@
     .hero-logo {
       width: min(900px, 88vw);
       opacity: 0;
-      /* Logo buzzes in AFTER tagline has settled */
-      animation: neon-on 2.6s ease-out 2s forwards;
+      /* No CSS animation — JS fires it after tagline clears */
     }
 
-    /* Tagline — appears FIRST at viewport center, then slides DOWN to reveal logo */
+    /* Tagline — appears AT logo center, pauses, then slides down to reveal logo */
     .hero-tagline {
       font-size: clamp(28px, 4.5vw, 56px);
       font-weight: 700;
@@ -58,15 +57,22 @@
       text-align: center;
       padding: 0 24px;
       opacity: 0;
-      transform: translateY(-22vh);
-      transition: opacity 1s ease, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+      transform: translateY(-22vh); /* logo center position */
+      /* no transition by default — stages added by JS */
     }
 
+    /* Stage 1: fade in in place — no movement */
     .hero-tagline.visible {
       opacity: 1;
-      transform: translateY(0);
       text-shadow: 0 0 40px rgba(168,85,247,0.2), 0 0 80px rgba(168,85,247,0.08);
       color: #fff;
+      transition: opacity 0.8s ease;
+    }
+
+    /* Stage 2: slide down to final position — added after pause */
+    .hero-tagline.settled {
+      transform: translateY(0);
+      transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .hero-tagline .notion-word {
@@ -533,30 +539,37 @@
     const tagline    = document.getElementById('hero-tagline');
     const notionWord = document.getElementById('notion-word');
 
-    // Step 1: tagline slides down from near-center into position
-    setTimeout(() => { tagline.classList.add('visible'); }, 400);
+    const navLogo     = document.getElementById('nav-logo');
+    const navWordmark = document.getElementById('nav-wordmark');
+    let heroAnimDone  = false;
 
-    // Step 2: "Notion" flickers in after tagline has fully settled
+    // Step 1: tagline APPEARS at logo center — fade in only, no movement
+    setTimeout(() => { tagline.classList.add('visible'); }, 300);
+
+    // Step 2: "Notion" lights up while tagline is visible at center
     setTimeout(() => {
       notionWord.style.animation = 'notion-neon-flicker 1.8s ease-out forwards';
       notionWord.addEventListener('animationend', () => {
-        notionWord.style.animation = ''; // clear inline — let .pulsing class take over
-        notionWord.style.opacity = '1';
+        notionWord.style.animation = '';
+        notionWord.style.opacity   = '1';
         notionWord.classList.add('pulsing');
       }, { once: true });
-    }, 1400);
+    }, 900);
 
-    const navLogo     = document.getElementById('nav-logo');
-    const navWordmark = document.getElementById('nav-wordmark');
+    // Step 3: tagline slides DOWN to its final position (making way for logo)
+    setTimeout(() => { tagline.classList.add('settled'); }, 1700);
 
-    // Step 3: logo buzzes in — track when done so shrink can start
-    let heroAnimDone = false;
-    logo.addEventListener('animationend', () => {
-      logo.style.opacity = '1';
-      logo.style.filter = 'drop-shadow(0 0 14px #A855F7) drop-shadow(0 0 28px rgba(217,70,239,0.45))';
-      logo.classList.add('pulsing');
-      heroAnimDone = true;
-    });
+    // Step 4: logo neon-on fires after tagline has cleared (~1100ms slide)
+    setTimeout(() => {
+      logo.style.animation = 'neon-on 2.6s ease-out forwards';
+      logo.addEventListener('animationend', () => {
+        logo.style.animation = '';
+        logo.style.opacity   = '1';
+        logo.style.filter    = 'drop-shadow(0 0 14px #A855F7) drop-shadow(0 0 28px rgba(217,70,239,0.45))';
+        logo.classList.add('pulsing');
+        heroAnimDone = true;
+      }, { once: true });
+    }, 2900); // 1700ms slide start + 1100ms slide + 100ms buffer
 
     // ── Scroll triggers the neon sequence; animationend chains steps (no setTimeout guessing) ──
     // Wide hysteresis: forward at 50vh, reverse at 15vh — plenty of buffer
