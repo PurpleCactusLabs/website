@@ -141,6 +141,18 @@
       50%       { transform: translateX(-50%) translateY(6px); }
     }
 
+    /* Neon cutting out — flicker then die */
+    @keyframes neon-off {
+      0%   { opacity: 1;   filter: drop-shadow(0 0 14px #A855F7) drop-shadow(0 0 28px rgba(217,70,239,0.45)); }
+      20%  { opacity: 0.8; filter: drop-shadow(0 0 18px #A855F7) drop-shadow(0 0 36px #D946EF); }
+      28%  { opacity: 0.1; filter: drop-shadow(0 0 2px #A855F7); }
+      35%  { opacity: 0.7; filter: drop-shadow(0 0 10px #A855F7) drop-shadow(0 0 20px #D946EF); }
+      50%  { opacity: 0.05; filter: drop-shadow(0 0 1px #A855F7); }
+      65%  { opacity: 0.4; filter: drop-shadow(0 0 6px #A855F7); }
+      78%  { opacity: 0;   filter: drop-shadow(0 0 0px transparent); }
+      100% { opacity: 0;   filter: drop-shadow(0 0 0px transparent); }
+    }
+
     /* ── HERO SPACER ────────────────────────────────────────── */
     /* Transparent — just holds the viewport height so content  */
     /* starts below, revealing the fixed logo behind it         */
@@ -174,11 +186,26 @@
       z-index: 10;
     }
 
+    /* Nav logo: absolutely centered in nav, appears via teleport effect */
+    .nav-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .nav-logo {
+      height: 60px;
+      width: auto;
+      opacity: 0;
+      display: block;
+    }
+
     .nav-wordmark {
       font-size: 15px;
       font-weight: 600;
       color: rgba(255,255,255,0.7);
       letter-spacing: 0.01em;
+      transition: opacity 0.3s ease;
     }
 
     .nav-links {
@@ -409,7 +436,11 @@
 
     <!-- NAV -->
     <nav>
-      <div class="nav-wordmark">Purple Cactus Labs</div>
+      <div class="nav-wordmark" id="nav-wordmark">Purple Cactus Labs</div>
+      <!-- Logo teleports here — centered absolutely -->
+      <div class="nav-center">
+        <img src="PCL_neon_logo_dark.svg" alt="Purple Cactus Labs" class="nav-logo" id="nav-logo" />
+      </div>
       <div class="nav-links">
         <a href="#products">Products</a>
         <a href="mailto:hello@purplecactus.io">Contact</a>
@@ -515,18 +546,83 @@
       }, { once: true });
     }, 1400);
 
-    // Step 3: logo buzzes in after tagline has settled
+    const navLogo     = document.getElementById('nav-logo');
+    const navWordmark = document.getElementById('nav-wordmark');
+
+    // Step 3: logo buzzes in — track when done so shrink can start
+    let heroAnimDone = false;
     logo.addEventListener('animationend', () => {
       logo.style.opacity = '1';
       logo.style.filter = 'drop-shadow(0 0 14px #A855F7) drop-shadow(0 0 28px rgba(217,70,239,0.45))';
       logo.classList.add('pulsing');
+      heroAnimDone = true;
     });
 
-    // Scroll fade: tagline fades out as you scroll down
+    // ── Scroll triggers the neon sequence; animationend chains steps (no setTimeout guessing) ──
+    // Wide hysteresis: forward at 50vh, reverse at 15vh — plenty of buffer
+    let navLogoVisible = false;
+
+    function showNavLogo() {
+      if (navLogoVisible) return;
+      navLogoVisible = true;
+
+      // Step 1: hero neon-off
+      logo.classList.remove('pulsing');
+      logo.style.animation = 'neon-off 0.6s ease-out forwards';
+      navWordmark.style.opacity = '0';
+
+      // Step 2: when hero is fully off → nav logo neon-on
+      logo.addEventListener('animationend', () => {
+        navWordmark.style.display = 'none';
+        navLogo.style.animation = 'neon-on 1.6s ease-out forwards';
+
+        // Step 3: when nav logo is fully on → lock in state
+        navLogo.addEventListener('animationend', () => {
+          navLogo.style.animation = '';
+          navLogo.style.opacity   = '1';
+          navLogo.style.filter    = 'drop-shadow(0 0 10px #A855F7) drop-shadow(0 0 20px rgba(217,70,239,0.45))';
+        }, { once: true });
+      }, { once: true });
+    }
+
+    function hideNavLogo() {
+      if (!navLogoVisible) return;
+      navLogoVisible = false;
+
+      // Step 1: nav logo neon-off
+      navLogo.style.filter    = '';
+      navLogo.style.animation = 'neon-off 0.6s ease-out forwards';
+
+      // Step 2: when nav logo is fully off → hero neon-on
+      navLogo.addEventListener('animationend', () => {
+        navLogo.style.animation = '';
+        navLogo.style.opacity   = '0';
+        navWordmark.style.display   = '';
+        navWordmark.style.opacity   = '1';
+
+        logo.style.animation = 'neon-on 0.8s ease-out forwards';
+
+        // Step 3: when hero is fully on → lock in + resume pulse
+        logo.addEventListener('animationend', () => {
+          logo.style.animation = '';
+          logo.style.opacity   = '1';
+          logo.style.filter    = 'drop-shadow(0 0 14px #A855F7) drop-shadow(0 0 28px rgba(217,70,239,0.45))';
+          logo.classList.add('pulsing');
+        }, { once: true });
+      }, { once: true });
+    }
+
     window.addEventListener('scroll', () => {
-      const fade = Math.max(0, 1 - window.scrollY / 250);
-      tagline.style.opacity = fade;
-    });
+      const scrollY = window.scrollY;
+      const vh      = window.innerHeight;
+
+      tagline.style.opacity = Math.max(0, 1 - scrollY / 250);
+
+      if (!heroAnimDone) return;
+
+      if (!navLogoVisible && scrollY >= vh * 0.50) showNavLogo();
+      else if (navLogoVisible && scrollY < vh * 0.15) hideNavLogo();
+    }, { passive: true });
   </script>
 
 </body>
