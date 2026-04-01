@@ -84,6 +84,7 @@
       gap: 10px;
       opacity: 0;
       transition: opacity 1s ease;
+      margin-top: 40px;
     }
 
     .hero-scroll-indicator.visible { opacity: 1; }
@@ -380,7 +381,43 @@
       pointer-events: none;
     }
 
-    /* ── PHILOSOPHY ──────────────────────────────────────────── */
+    /* ── WHO WE MAKE IT FOR ─────────────────────────────────── */
+    .audience-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .audience-card {
+      background: var(--dark-violet);
+      border: 1px solid rgba(168,85,247,0.12);
+      border-radius: 14px;
+      padding: 32px;
+    }
+
+    .audience-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--pcl-purple);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .audience-headline {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+
+    .audience-text {
+      font-size: 15px;
+      color: rgba(255,255,255,0.42);
+      line-height: 1.7;
+    }
+
+    /* ── WHY WE MAKE IT ──────────────────────────────────────── */
     .philosophy {
       background: rgba(168,85,247,0.025);
       border-top: 1px solid rgba(168,85,247,0.08);
@@ -516,9 +553,36 @@
 
     <hr />
 
-    <!-- HOW WE WORK -->
+    <!-- WHO WE MAKE IT FOR -->
+    <section class="section">
+      <div class="section-label">Who we make it for</div>
+      <h2 class="section-title">Built for people who run lean</h2>
+      <div class="audience-grid">
+        <div class="audience-card">
+          <div class="audience-label">Solopreneurs</div>
+          <div class="audience-headline">You're the whole team.</div>
+          <div class="audience-text">Sales, ops, client work — you're running all of it. Our tools cut the overhead so you can stay in your zone.</div>
+        </div>
+        <div class="audience-card">
+          <div class="audience-label">Freelancers</div>
+          <div class="audience-headline">Relationships are your business.</div>
+          <div class="audience-text">We make it easier to keep track of people, threads, and context — without leaving where the work already happens.</div>
+        </div>
+        <div class="audience-card">
+          <div class="audience-label">Startup Teams</div>
+          <div class="audience-headline">Small team, big surface area.</div>
+          <div class="audience-text">You've already invested in your stack. We make it smarter — without adding another tool to manage.</div>
+        </div>
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- WHY WE MAKE IT -->
     <div class="philosophy">
       <div class="section">
+        <div class="section-label">Why we make it</div>
+        <h2 class="section-title">The way we think about software</h2>
         <div class="traits">
           <div>
             <div class="trait-label">We use it too</div>
@@ -542,7 +606,12 @@
 
     <!-- FOOTER -->
     <footer>
-      <div>© 2026 Purple Cactus Labs · Las Vegas, NV</div>
+      <div>
+        <div>© 2026 Purple Cactus Labs</div>
+        <div style="font-size:11px; margin-top:4px; color:rgba(255,255,255,0.15); letter-spacing:0.04em;">
+          Where we make it → Las Vegas, NV 🌵
+        </div>
+      </div>
       <div class="footer-links">
         <a href="/notion-gmail-sidebar">Notion CRM Sidebar</a>
         <a href="/privacy">Privacy</a>
@@ -576,11 +645,11 @@
         logo.style.filter    = 'drop-shadow(0 0 14px #A855F7) drop-shadow(0 0 28px rgba(217,70,239,0.45))';
         logo.classList.add('pulsing');
         heroAnimDone = true;
-
-        // Fade in scroll indicator after logo is fully on
-        scrollCta.classList.add('visible');
       }, { once: true });
     }, 2900); // 1700ms slide start + 1100ms slide + 100ms buffer
+
+    // Scroll CTA fades in just after the logo starts flickering (not waiting for full completion)
+    setTimeout(() => { scrollCta.classList.add('visible'); }, 3300);
 
     // ── Scroll triggers the neon sequence; animationend chains steps (no setTimeout guessing) ──
     // Wide hysteresis: forward at 50vh, reverse at 15vh — plenty of buffer
