@@ -606,25 +606,41 @@
       z-index: 2;
     }
 
+    /* map-stage wraps img + marker so both zoom together */
+    .map-stage {
+      position: absolute;
+      inset: 0;
+      transform-origin: 21% 46%; /* Las Vegas anchor */
+      transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+      transform: scale(1);
+    }
+
+    .map-stage.map-zoomed { transform: scale(1.7) translateX(13%); }
+
     .dotmap-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: center;
-      /* dots already purple — just dim them */
-      opacity: 0.3;
+      opacity: 0;
       display: block;
+      transition: opacity 0.8s ease;
     }
+
+    .dotmap-img.map-visible { opacity: 0.3; }
 
     /* Las Vegas marker — positioned as % of the container */
     .lv-marker {
       position: absolute;
-      /* ~21% from left, ~57% from top — tweak if needed */
       left: 21%;
       top: 46%;
       z-index: 3;
-      width: 0; height: 0; /* zero-size anchor */
+      width: 0; height: 0;
+      opacity: 0;
+      transition: opacity 0.4s ease;
     }
+
+    .lv-marker.lv-visible { opacity: 1; }
 
     .lv-dot {
       position: absolute;
@@ -862,13 +878,15 @@
 
         <!-- Right: US dot map radar -->
         <div class="radar-wrap">
-          <img src="PCL_US Dot Map.svg" class="dotmap-img" alt="United States" />
-          <!-- Las Vegas marker -->
-          <div class="lv-marker">
-            <div class="lv-ring"></div>
-            <div class="lv-ring lv-ring-2"></div>
-            <div class="lv-dot"></div>
-            <div class="lv-label">LAS VEGAS</div>
+          <!-- map-stage: img + marker zoom together -->
+          <div class="map-stage" id="map-stage">
+            <img src="PCL_US Dot Map.svg" class="dotmap-img" alt="United States" />
+            <div class="lv-marker">
+              <div class="lv-ring"></div>
+              <div class="lv-ring lv-ring-2"></div>
+              <div class="lv-dot"></div>
+              <div class="lv-label"></div>
+            </div>
           </div>
           <div class="radar-where">Where we make it</div>
         </div>
@@ -968,6 +986,47 @@
       }, { once: true });
     }
 
+    // ── Map reveal sequence ──────────────────────────────────
+    const radarWrap  = document.querySelector('.radar-wrap');
+    const mapStage   = document.getElementById('map-stage');
+    const dotmapImg  = document.querySelector('.dotmap-img');
+    const lvMarker   = document.querySelector('.lv-marker');
+    const lvLabel    = document.querySelector('.lv-label');
+
+    function typeText(el, text, speed, cb) {
+      let i = 0;
+      const t = setInterval(() => {
+        el.textContent += text[i++];
+        if (i >= text.length) { clearInterval(t); if (cb) cb(); }
+      }, speed);
+    }
+
+    function runMapSequence() {
+      // Step 1: map fades in
+      dotmapImg.classList.add('map-visible');
+
+      // Step 2: dot appears
+      setTimeout(() => lvMarker.classList.add('lv-visible'), 900);
+
+      // Step 3: type out LAS VEGAS
+      setTimeout(() => typeText(lvLabel, 'LAS VEGAS', 75, () => {
+        // Step 4: zoom stage (img + marker move together)
+        setTimeout(() => mapStage.classList.add('map-zoomed'), 300);
+      }), 1400);
+    }
+
+    const mapObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          runMapSequence();
+          mapObserver.unobserve(radarWrap);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    mapObserver.observe(radarWrap);
+
+    // ── Scroll / nav teleport ────────────────────────────────
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
       const vh      = window.innerHeight;
