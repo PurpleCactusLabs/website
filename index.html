@@ -39,12 +39,45 @@
       justify-content: center;
       background: var(--deep-night);
       z-index: 0;
-      gap: 40px;
+      gap: 64px;
       padding-bottom: 10vh;
     }
 
+    .neon-frame {
+      padding: 28px 48px;
+      border: 1.5px solid rgba(168,85,247,0);
+      border-radius: 32px;
+      opacity: 0;
+      transition: opacity 0.8s ease, border-color 0.8s ease, box-shadow 0.8s ease;
+    }
+
+    .neon-frame.lit {
+      opacity: 1;
+      border-color: rgba(195,130,255,0.85);
+      box-shadow:
+        0 0 8px rgba(168,85,247,0.7), 0 0 24px rgba(168,85,247,0.4), 0 0 60px rgba(168,85,247,0.15),
+        inset 0 0 16px rgba(168,85,247,0.35), inset 0 0 48px rgba(168,85,247,0.15);
+    }
+
+    @keyframes frame-pulse {
+      0%, 100% {
+        box-shadow:
+          0 0 8px rgba(168,85,247,0.7), 0 0 24px rgba(168,85,247,0.4), 0 0 60px rgba(168,85,247,0.15),
+          inset 0 0 16px rgba(168,85,247,0.35), inset 0 0 48px rgba(168,85,247,0.15);
+      }
+      50% {
+        box-shadow:
+          0 0 12px rgba(168,85,247,0.8), 0 0 32px rgba(168,85,247,0.45), 0 0 80px rgba(168,85,247,0.2),
+          inset 0 0 20px rgba(168,85,247,0.4), inset 0 0 60px rgba(168,85,247,0.2);
+      }
+    }
+
+    .neon-frame.pulsing {
+      animation: frame-pulse 3.5s ease-in-out infinite;
+    }
+
     .hero-logo {
-      width: min(680px, 72vw);
+      width: min(560px, 58vw);
       opacity: 0;
       /* No CSS animation — JS fires it after tagline clears */
     }
@@ -58,7 +91,7 @@
       text-align: center;
       padding: 0 24px;
       text-shadow: 0 0 40px rgba(168,85,247,0.2), 0 0 80px rgba(168,85,247,0.08);
-      transform: translateY(-12vh);
+      transform: translateY(-18vh);
     }
 
     .hero-tagline.settled {
@@ -1144,7 +1177,9 @@
 
   <!-- FIXED LOGO STAGE — stays behind everything -->
   <div class="logo-stage">
-    <img src="PCL_neon_logo_dark.svg" alt="Purple Cactus Labs" class="hero-logo" id="hero-logo" />
+    <div class="neon-frame" id="neon-frame">
+      <img src="PCL_neon_logo_dark.svg" alt="Purple Cactus Labs" class="hero-logo" id="hero-logo" />
+    </div>
     <div class="hero-tagline" id="hero-tagline">
       <span class="tagline-line" id="tagline-line-1">Beautiful tools.</span>
       <span class="tagline-line" id="tagline-line-2">Built on <span class="notion-word" id="notion-word">Notion</span>.</span>
@@ -1366,6 +1401,7 @@
 
 
     const logo    = document.getElementById('hero-logo');
+    const frame   = document.getElementById('neon-frame');
     const tagline = document.getElementById('hero-tagline');
 
     const navLogo    = document.getElementById('nav-logo');
@@ -1408,12 +1444,14 @@
         }
         gestureEvents.forEach(e => document.addEventListener(e, playOnGesture, { passive: true }));
       });
+      frame.classList.add('lit');
       logo.style.animation = 'neon-on 2.6s ease-out forwards';
       logo.addEventListener('animationend', () => {
         logo.style.animation = '';
         logo.style.opacity   = '1';
         logo.style.filter    = 'drop-shadow(0 0 14px #A855F7) drop-shadow(0 0 28px rgba(217,70,239,0.45))';
         logo.classList.add('pulsing');
+        frame.classList.add('pulsing');
         heroAnimDone = true;
       }, { once: true });
     }, 2700);
@@ -1429,9 +1467,11 @@
       if (navLogoVisible) return;
       navLogoVisible = true;
 
-      // Step 1: hero neon-off
+      // Step 1: hero neon-off + frame fade out
       logo.classList.remove('pulsing');
       logo.style.animation = 'neon-off 0.6s ease-out forwards';
+      frame.classList.remove('pulsing');
+      frame.style.opacity = '0';
 
       // Step 2: when hero is fully off → nav logo neon-on
       logo.addEventListener('animationend', () => {
@@ -1467,6 +1507,8 @@
           logo.style.opacity   = '1';
           logo.style.filter    = 'drop-shadow(0 0 14px #A855F7) drop-shadow(0 0 28px rgba(217,70,239,0.45))';
           logo.classList.add('pulsing');
+          frame.style.opacity = '1';
+          frame.classList.add('pulsing');
         }, { once: true });
       }, { once: true });
     }
