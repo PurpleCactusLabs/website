@@ -234,6 +234,11 @@
       gap: 28px;
     }
 
+    .nav-right {
+      display: flex;
+      align-items: center;
+    }
+
     .nav-links a {
       color: rgba(255,255,255,0.45);
       text-decoration: none;
@@ -753,13 +758,15 @@
 
     <!-- NAV -->
     <nav>
+      <div class="nav-links">
+        <a href="#products">Products</a>
+        <a href="#contact">Contact</a>
+      </div>
       <!-- Logo teleports here — centered absolutely -->
       <div class="nav-center">
         <img src="PCL_neon_logo_dark.svg" alt="Purple Cactus Labs" class="nav-logo" id="nav-logo" />
       </div>
-      <div class="nav-links">
-        <a href="#products">Products</a>
-        <a href="mailto:hello@purplecactus.io">Contact</a>
+      <div class="nav-right">
         <a href="/notion-gmail-sidebar" class="nav-cta">Get Notion CRM Sidebar</a>
       </div>
     </nav>
@@ -865,7 +872,7 @@
     </div>
 
     <!-- CONTACT + WHERE WE MAKE IT -->
-    <div class="contact-band">
+    <div class="contact-band" id="contact">
       <div class="contact-inner">
 
         <!-- Left: Contact -->
