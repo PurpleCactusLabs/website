@@ -1,0 +1,90 @@
+<!--
+  UNLIT SIGN FEATURE — saved for later
+  When user scrolls back to top, hero logo appears as a dim unlit sign
+  with a hint-flicker, clickable to fire buzz + neon-on sequence.
+  To restore: drop CSS into <style>, HTML into logo-stage, JS into hideNavLogo.
+-->
+
+<!-- ═══════════════ CSS ═══════════════ -->
+<style>
+/* Unlit state — dim frame, cursor hints it's clickable */
+.neon-frame.unlit {
+  opacity: 1;
+  cursor: pointer;
+  border-color: rgba(168,85,247,0.2);
+  box-shadow: 0 0 4px rgba(168,85,247,0.12), inset 0 0 8px rgba(168,85,247,0.05);
+}
+
+/* Single flicker hint after a pause */
+@keyframes hint-flicker {
+  0%, 90%, 100% { border-color: rgba(168,85,247,0.2); box-shadow: 0 0 4px rgba(168,85,247,0.12), inset 0 0 8px rgba(168,85,247,0.05); }
+  93%            { border-color: rgba(195,130,255,0.6); box-shadow: 0 0 10px rgba(168,85,247,0.5), inset 0 0 14px rgba(168,85,247,0.2); }
+  96%            { border-color: rgba(168,85,247,0.2); box-shadow: 0 0 4px rgba(168,85,247,0.12), inset 0 0 8px rgba(168,85,247,0.05); }
+}
+
+.neon-frame.unlit.hinting {
+  animation: hint-flicker 4s ease-in-out infinite;
+}
+
+/* Unlit logo — white/dim, layered over neon logo */
+.hero-logo-unlit {
+  position: absolute;
+  inset: 28px 48px;
+  width: calc(100% - 96px);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  filter: brightness(0.35) saturate(0);
+  pointer-events: none;
+}
+
+.neon-frame.unlit .hero-logo-unlit { opacity: 1; }
+</style>
+
+
+<!-- ═══════════════ HTML (inside .neon-frame) ═══════════════ -->
+<img src="PCL_logo_white.svg" alt="" class="hero-logo-unlit" id="hero-logo-unlit" />
+
+
+<!-- ═══════════════ JS (inside hideNavLogo, after nav logo fades off) ═══════════════ -->
+<script>
+// Replace the "restore lit state" block in hideNavLogo with this:
+
+// Step 2: when nav logo is off → show unlit sign
+navLogo.addEventListener('animationend', () => {
+  navLogo.style.animation = '';
+  navLogo.style.opacity   = '0';
+
+  // Show unlit state — dim frame + grey logo
+  logo.style.opacity = '0';
+  logo.style.filter  = '';
+  logo.style.animation = '';
+  logo.classList.remove('pulsing');
+  frame.classList.remove('pulsing');
+  frame.classList.remove('lit');
+  frame.classList.add('unlit');
+
+  // After a pause, start the hint flicker
+  setTimeout(() => { frame.classList.add('hinting'); }, 2000);
+
+  // Click to turn it on
+  frame.addEventListener('click', function turnOn() {
+    frame.removeEventListener('click', turnOn);
+    frame.classList.remove('unlit', 'hinting');
+    frame.style.animation = '';
+
+    buzz.currentTime = 0;
+    buzz.play().catch(() => {});
+
+    logo.style.animation = 'neon-on 0.8s ease-out forwards';
+    logo.addEventListener('animationend', () => {
+      logo.style.animation = '';
+      logo.style.opacity   = '1';
+      logo.style.filter    = 'drop-shadow(0 0 14px #A855F7) drop-shadow(0 0 28px rgba(217,70,239,0.45))';
+      logo.classList.add('pulsing');
+      frame.classList.add('lit');
+      frame.style.opacity = '1';
+      frame.classList.add('pulsing');
+    }, { once: true });
+  });
+}, { once: true });
+</script>
