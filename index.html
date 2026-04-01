@@ -1026,11 +1026,6 @@
     /* ── FOOTER ──────────────────────────────────────────────── */
     .footer-wrap {
       position: relative;
-      clip-path: inset(-30px 0 0 0);
-      transition: clip-path 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .footer-wrap:has(.site-cta-tab:hover) {
       clip-path: inset(-220px 0 0 0);
     }
 
@@ -1070,17 +1065,17 @@
       transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .site-cta-tab:hover {
+    .site-cta-tab.open {
       transform: translateY(0);
     }
 
     .site-cta-body {
       background: var(--pcl-purple);
       border-radius: 0;
-      padding: 20px 24px;
+      padding: 6px 18px 8px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
       width: 220px;
       box-shadow: 0 -8px 40px rgba(168,85,247,0.3);
     }
@@ -1089,13 +1084,28 @@
     .site-cta-handle {
       background: var(--pcl-purple);
       border-radius: 8px 8px 0 0;
-      padding: 6px 16px;
+      padding: 6px 18px;
+      width: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.7);
-      white-space: nowrap;
+    }
+
+    @keyframes blink-chevron {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.15; }
+    }
+
+    .cta-chevron {
+      font-style: normal;
+      font-size: 16px;
+      line-height: 1;
+      animation: blink-chevron 1.4s ease-in-out infinite;
     }
 
     .site-cta-headline {
@@ -1325,14 +1335,13 @@
 
     <!-- FOOTER -->
     <div class="footer-wrap">
-      <a href="mailto:hello@purplecactus.io" class="site-cta-tab">
-        <div class="site-cta-handle">Like this website?</div>
+      <div class="site-cta-tab" id="site-cta-tab">
+        <div class="site-cta-handle">Like this website? <i class="cta-chevron">▾</i></div>
         <div class="site-cta-body">
           <div class="site-cta-headline">We built it.</div>
           <div class="site-cta-sub">We design and build custom sites and tools for small teams.</div>
-          <div class="site-cta-link">hello@purplecactus.io →</div>
         </div>
-      </a>
+      </div>
       <footer>
         <div>© 2026 Purple Cactus Labs · Las Vegas, NV 🌵</div>
         <div class="footer-links">
@@ -1348,6 +1357,11 @@
 
 
   <script>
+    document.getElementById('site-cta-tab').addEventListener('click', function() {
+      this.classList.toggle('open');
+    });
+
+
     const logo    = document.getElementById('hero-logo');
     const tagline = document.getElementById('hero-tagline');
 
