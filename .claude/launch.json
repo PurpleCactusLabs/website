@@ -3,9 +3,9 @@
   "configurations": [
     {
       "name": "website",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-p", "7892", "."],
-      "port": 7892
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3000"],
+      "port": 3000
     }
   ]
 }
