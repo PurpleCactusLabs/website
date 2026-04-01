@@ -310,20 +310,18 @@
       width: fit-content;
     }
 
-    /* Featured product — flex card + peek panel */
+    /* Featured product — main card + absolute peek card behind it */
     .product-stage {
       max-width: 1240px;
       margin: 0 auto;
       padding: 0 48px;
-      display: flex;
-      align-items: stretch;
+      position: relative;
       overflow: visible;
     }
 
-    /* Glow wrapper — handles the fuchsia border glow */
+    /* Glow wrapper */
     .product-glow {
-      flex: 1;
-      min-width: 0;
+      display: block;
       border-radius: 20px;
       background: linear-gradient(135deg, rgba(217,70,239,0.18), rgba(168,85,247,0.1));
       padding: 1px;
@@ -470,37 +468,29 @@
       pointer-events: none;
     }
 
-    /* Coming soon card — flex sibling, sits behind + offset to read as full card behind */
+    /* Coming soon — absolute, same size as main card, only right edge visible */
     .product-peek {
-      flex: 0 0 56px;
-      overflow: hidden;
-      transition: flex-basis 0.45s cubic-bezier(0.22, 1, 0.36, 1), z-index 0s 0s;
+      position: absolute;
+      left: 48px; right: 48px;
+      top: 14px; bottom: 14px;
       background: var(--pcl-purple);
       border-radius: 20px;
-      margin-left: -18px;
-      margin-top: 14px;
-      margin-bottom: -14px;
       z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      cursor: default;
-      box-shadow: 6px 16px 40px rgba(0,0,0,0.5);
+      overflow: hidden;
+      box-shadow: 8px 16px 48px rgba(0,0,0,0.5);
+      transform: translateX(52px);
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .product-stage:hover .product-peek {
-      flex-basis: 260px;
-      z-index: 3;
-      transition: flex-basis 0.45s cubic-bezier(0.22, 1, 0.36, 1), z-index 0s;
+      transform: translateX(240px);
     }
 
-    /* Tab strip — always visible, holds chevron */
+    /* Tab — rightmost 52px, visible in default state */
     .peek-tab {
       position: absolute;
-      top: 0; bottom: 0; right: 0;
-      width: 56px;
+      top: 0; bottom: 0;
+      right: 0; width: 52px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -529,16 +519,17 @@
       line-height: 1;
     }
 
-    /* Expanded content */
+    /* Content — rightmost 240px, fades in on hover */
     .peek-content {
-      padding: 52px 36px 52px 48px;
-      opacity: 0;
-      transition: opacity 0.2s ease 0.2s;
-      min-width: 224px;
+      position: absolute;
+      top: 0; bottom: 0;
+      right: 0; width: 240px;
+      padding: 48px 40px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      height: 100%;
+      opacity: 0;
+      transition: opacity 0.2s ease 0.2s;
     }
 
     .product-stage:hover .peek-content {
