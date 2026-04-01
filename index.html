@@ -482,7 +482,7 @@
       transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .product-stage:hover .product-peek {
+    .product-peek:hover {
       transform: translateX(240px);
     }
 
@@ -499,7 +499,7 @@
       transition: opacity 0.15s ease;
     }
 
-    .product-stage:hover .peek-tab {
+    .product-peek:hover .peek-tab {
       opacity: 0;
       pointer-events: none;
     }
@@ -532,7 +532,7 @@
       transition: opacity 0.2s ease 0.2s;
     }
 
-    .product-stage:hover .peek-content {
+    .product-peek:hover .peek-content {
       opacity: 1;
     }
 
@@ -1024,6 +1024,16 @@
     }
 
     /* ── FOOTER ──────────────────────────────────────────────── */
+    .footer-wrap {
+      position: relative;
+      clip-path: inset(-30px 0 0 0);
+      transition: clip-path 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .footer-wrap:has(.site-cta-tab:hover) {
+      clip-path: inset(-220px 0 0 0);
+    }
+
     footer {
       border-top: 1px solid rgba(168,85,247,0.08);
       padding: 32px 48px;
@@ -1032,6 +1042,9 @@
       justify-content: space-between;
       color: rgba(255,255,255,0.25);
       font-size: 13px;
+      position: relative;
+      z-index: 1;
+      background: var(--deep-night);
     }
 
     footer a {
@@ -1042,6 +1055,70 @@
 
     footer a:hover { color: var(--pcl-purple); }
     .footer-links { display: flex; gap: 24px; }
+
+    /* ── SITE CTA TAB — peeks above footer, body hidden behind it ─ */
+    .site-cta-tab {
+      position: absolute;
+      bottom: 100%;
+      right: 48px;
+      z-index: 0;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      transform: translateY(calc(100% - 28px));
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .site-cta-tab:hover {
+      transform: translateY(0);
+    }
+
+    .site-cta-body {
+      background: var(--pcl-purple);
+      border-radius: 0;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 220px;
+      box-shadow: 0 -8px 40px rgba(168,85,247,0.3);
+    }
+
+    /* Handle — the sliver that peeks above the footer */
+    .site-cta-handle {
+      background: var(--pcl-purple);
+      border-radius: 8px 8px 0 0;
+      padding: 6px 16px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      white-space: nowrap;
+    }
+
+    .site-cta-headline {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+
+    .site-cta-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .site-cta-link {
+      margin-top: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+      padding-bottom: 1px;
+      width: fit-content;
+    }
 
     /* ── RESPONSIVE ──────────────────────────────────────────── */
     @media (max-width: 640px) {
@@ -1058,7 +1135,7 @@
   <!-- FIXED LOGO STAGE — stays behind everything -->
   <div class="logo-stage">
     <img src="PCL_neon_logo_dark.svg" alt="Purple Cactus Labs" class="hero-logo" id="hero-logo" />
-    <div class="hero-tagline" id="hero-tagline">Beautiful tools that make<br /><span class="notion-word" id="notion-word">Notion</span> do more.</div>
+    <div class="hero-tagline" id="hero-tagline">Beautiful tools.<br />Built on <span class="notion-word" id="notion-word">Notion</span>.</div>
     <div class="hero-scroll-indicator" id="hero-scroll-indicator">
       <a href="#content" class="hero-scroll-label">See what we make</a>
       <div class="hero-chevrons">
@@ -1093,7 +1170,7 @@
     <hr />
 
     <!-- PRODUCTS -->
-    <section id="products" style="padding: 96px 0 80px;">
+    <section id="products" style="padding: 67px 0 80px;">
       <div class="section" style="padding-bottom: 40px;">
         <div class="section-label">Products</div>
         <h2 class="section-title">What we make</h2>
@@ -1109,7 +1186,7 @@
             <div class="pf-info">
               <div class="product-chip">Chrome Extension</div>
               <h3 class="pf-name">Notion CRM Sidebar</h3>
-              <p class="pf-desc">See your Notion CRM data inside Gmail — automatically, alongside any email thread. No tab switching.</p>
+              <p class="pf-desc">See your Notion CRM data inside Gmail — automatically — right alongside any email thread. No tab-switching.</p>
               <div class="pf-cta-btn">Learn more →</div>
             </div>
 
@@ -1127,7 +1204,7 @@
         <div class="product-peek">
           <!-- Always-visible tab strip -->
           <div class="peek-tab">
-            <span class="peek-tab-label">Coming soon</span>
+            <span class="peek-tab-label">More products</span>
             <svg class="peek-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="9,6 15,12 9,18"/>
             </svg>
@@ -1135,8 +1212,7 @@
           <!-- Expanded content -->
           <div class="peek-content">
             <div class="peek-eyebrow">Coming soon</div>
-            <div class="peek-heading">More on<br/>the way.</div>
-            <p class="peek-body">We go where the problems are.</p>
+            <div class="peek-heading">More tools,<br/>coming soon.</div>
             <a href="#contact" class="peek-cta">Need something built? →</a>
           </div>
         </div>
@@ -1153,7 +1229,7 @@
         <h2 class="section-title">Why we make it</h2>
         <div class="one-idea">
           <span class="one-idea-label">One simple idea</span>
-          <p class="one-idea-text">Every tool we build starts as something we needed ourselves. We use it daily, we make it great, and then we make it available to anyone who needs it too.</p>
+          <p class="one-idea-text">Every tool we build starts as something we needed ourselves. We use it daily, refine it until it's great, then ship it.</p>
         </div>
         <div class="pillars">
           <div class="pillar">
@@ -1165,8 +1241,7 @@
           <div class="pillar">
             <div class="pillar-number">02</div>
             <div class="pillar-index">02</div>
-            <div class="pillar-statement">Design is<br/>how it works.</div>
-            <div class="pillar-sub">Great UI isn't decoration — it's the product. If it takes explaining, it's not done yet.</div>
+            <div class="pillar-statement">If it takes<br/>explaining,<br/>it's not done.</div>
           </div>
           <div class="pillar">
             <div class="pillar-number">03</div>
@@ -1197,7 +1272,7 @@
         </div>
         <div class="audience-card">
           <div class="audience-label">Startup Teams</div>
-          <div class="audience-headline">Small team, big surface area.</div>
+          <div class="audience-headline">Small team, big ambitions.</div>
           <div class="audience-text">You've already invested in your stack. We make it smarter — without adding another tool to manage.</div>
         </div>
       </div>
@@ -1226,7 +1301,7 @@
         <div>
           <div class="contact-label">Work with us</div>
           <h2 class="contact-heading">Got a problem<br/>worth solving?</h2>
-          <p class="contact-body">We take on select client projects — custom Notion setups, internal tools, and polished front-ends built on the stack you already use. If you're a solopreneur, freelancer, or small team with a specific problem, we want to hear about it.</p>
+          <p class="contact-body">We take on select client projects — custom Notion setups, internal tools, and custom websites that fit what you're already using. If you're a solopreneur, freelancer, or small team with a specific problem, tell us about it.</p>
           <a href="mailto:hello@purplecactus.io" class="contact-link">hello@purplecactus.io →</a>
         </div>
 
@@ -1249,17 +1324,28 @@
     </div>
 
     <!-- FOOTER -->
-    <footer>
-      <div>© 2026 Purple Cactus Labs · Las Vegas, NV 🌵</div>
-      <div class="footer-links">
-        <a href="/notion-gmail-sidebar">Notion CRM Sidebar</a>
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
-        <a href="mailto:hello@purplecactus.io">hello@purplecactus.io</a>
-      </div>
-    </footer>
+    <div class="footer-wrap">
+      <a href="mailto:hello@purplecactus.io" class="site-cta-tab">
+        <div class="site-cta-handle">Like this website?</div>
+        <div class="site-cta-body">
+          <div class="site-cta-headline">We built it.</div>
+          <div class="site-cta-sub">We design and build custom sites and tools for small teams.</div>
+          <div class="site-cta-link">hello@purplecactus.io →</div>
+        </div>
+      </a>
+      <footer>
+        <div>© 2026 Purple Cactus Labs · Las Vegas, NV 🌵</div>
+        <div class="footer-links">
+          <a href="/notion-gmail-sidebar">Notion CRM Sidebar</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+          <a href="mailto:hello@purplecactus.io">hello@purplecactus.io</a>
+        </div>
+      </footer>
+    </div>
 
   </div><!-- /content -->
+
 
   <script>
     const logo    = document.getElementById('hero-logo');
