@@ -513,6 +513,117 @@
       .one-idea { flex-direction: column; gap: 10px; }
     }
 
+    /* ── CONTACT + WHERE ────────────────────────────────────── */
+    .contact-band {
+      border-top: 1px solid rgba(168,85,247,0.08);
+    }
+
+    .contact-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 96px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .contact-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--pcl-purple);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .contact-heading {
+      font-size: clamp(26px, 3vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .contact-body {
+      font-size: 15px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.75;
+      margin-bottom: 32px;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--pcl-purple);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: 0.01em;
+      transition: gap 0.2s ease;
+    }
+
+    .contact-link:hover { gap: 13px; }
+
+    /* Radar map */
+    .radar-wrap {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #030C0C;
+      border: 1px solid rgba(168,85,247,0.15);
+      box-shadow: 0 0 80px rgba(168,85,247,0.06), inset 0 0 80px rgba(0,0,0,0.6);
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* CRT scan lines */
+    .radar-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.15) 3px,
+        rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Vignette */
+    .radar-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.75) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .radar-svg { width: 72%; height: auto; position: relative; z-index: 1; }
+
+    .radar-where {
+      position: absolute;
+      bottom: 18px;
+      left: 22px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(168,85,247,0.35);
+      z-index: 3;
+    }
+
+    @media (max-width: 768px) {
+      .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+    }
+
     /* ── FOOTER ──────────────────────────────────────────────── */
     footer {
       border-top: 1px solid rgba(168,85,247,0.08);
@@ -678,14 +789,90 @@
       </div>
     </div>
 
+    <!-- CONTACT + WHERE WE MAKE IT -->
+    <div class="contact-band">
+      <div class="contact-inner">
+
+        <!-- Left: Contact -->
+        <div>
+          <div class="contact-label">Work with us</div>
+          <h2 class="contact-heading">Got a problem<br/>worth solving?</h2>
+          <p class="contact-body">We take on select client projects — custom Notion setups, internal tools, and polished front-ends built on the stack you already use. If you're a solopreneur, freelancer, or small team with a specific problem, we want to hear about it.</p>
+          <a href="mailto:hello@purplecactus.io" class="contact-link">hello@purplecactus.io →</a>
+        </div>
+
+        <!-- Right: Nevada radar map -->
+        <div class="radar-wrap">
+          <svg viewBox="0 0 200 230" class="radar-svg" xmlns="http://www.w3.org/2000/svg">
+
+            <!-- Grid lines -->
+            <line x1="0" y1="57" x2="200" y2="57" stroke="rgba(168,85,247,0.07)" stroke-width="1"/>
+            <line x1="0" y1="115" x2="200" y2="115" stroke="rgba(168,85,247,0.07)" stroke-width="1"/>
+            <line x1="0" y1="172" x2="200" y2="172" stroke="rgba(168,85,247,0.07)" stroke-width="1"/>
+            <line x1="50" y1="0" x2="50" y2="230" stroke="rgba(168,85,247,0.07)" stroke-width="1"/>
+            <line x1="100" y1="0" x2="100" y2="230" stroke="rgba(168,85,247,0.07)" stroke-width="1"/>
+            <line x1="150" y1="0" x2="150" y2="230" stroke="rgba(168,85,247,0.07)" stroke-width="1"/>
+
+            <!-- Nevada outline — simplified but recognizable -->
+            <!-- NW corner → NE corner → SE corner → bottom jog → diagonal back to NW -->
+            <path d="M 22,12 L 165,12 L 165,192 L 95,192 L 22,142 Z"
+                  fill="rgba(168,85,247,0.05)"
+                  stroke="rgba(168,85,247,0.5)"
+                  stroke-width="1.5"
+                  stroke-linejoin="round"/>
+
+            <!-- NV state label -->
+            <text x="88" y="105" text-anchor="middle"
+                  fill="rgba(168,85,247,0.1)"
+                  font-size="34" font-weight="800"
+                  font-family="-apple-system, sans-serif"
+                  letter-spacing="6">NV</text>
+
+            <!-- Las Vegas: bottom-right quadrant of Nevada -->
+            <!-- Crosshair lines -->
+            <line x1="136" y1="177" x2="126" y2="177" stroke="rgba(168,85,247,0.5)" stroke-width="0.75"/>
+            <line x1="148" y1="177" x2="158" y2="177" stroke="rgba(168,85,247,0.5)" stroke-width="0.75"/>
+            <line x1="142" y1="169" x2="142" y2="160" stroke="rgba(168,85,247,0.5)" stroke-width="0.75"/>
+            <line x1="142" y1="185" x2="142" y2="194" stroke="rgba(168,85,247,0.5)" stroke-width="0.75"/>
+
+            <!-- Pulse rings -->
+            <circle cx="142" cy="177" r="5" fill="none" stroke="#A855F7" stroke-width="1" opacity="0">
+              <animate attributeName="r" values="5;20" dur="2.2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.7;0" dur="2.2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="142" cy="177" r="5" fill="none" stroke="#A855F7" stroke-width="0.5" opacity="0">
+              <animate attributeName="r" values="5;28" dur="2.2s" begin="0.7s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.4;0" dur="2.2s" begin="0.7s" repeatCount="indefinite"/>
+            </circle>
+
+            <!-- Las Vegas dot -->
+            <circle cx="142" cy="177" r="3" fill="#A855F7" filter="url(#dot-glow)">
+              <animate attributeName="opacity" values="1;0.25;1" dur="1.6s" repeatCount="indefinite"/>
+            </circle>
+
+            <!-- Dot glow filter -->
+            <defs>
+              <filter id="dot-glow" x="-100%" y="-100%" width="300%" height="300%">
+                <feGaussianBlur stdDeviation="2.5" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+
+            <!-- LAS VEGAS label -->
+            <text x="150" y="168" fill="rgba(168,85,247,0.65)"
+                  font-size="7" font-family="-apple-system, sans-serif"
+                  font-weight="700" letter-spacing="1.2">LAS VEGAS</text>
+
+          </svg>
+          <div class="radar-where">Where we make it</div>
+        </div>
+
+      </div>
+    </div>
+
     <!-- FOOTER -->
     <footer>
-      <div>
-        <div>© 2026 Purple Cactus Labs</div>
-        <div style="font-size:11px; margin-top:4px; color:rgba(255,255,255,0.15); letter-spacing:0.04em;">
-          Where we make it → Las Vegas, NV 🌵
-        </div>
-      </div>
+      <div>© 2026 Purple Cactus Labs · Las Vegas, NV 🌵</div>
       <div class="footer-links">
         <a href="/notion-gmail-sidebar">Notion CRM Sidebar</a>
         <a href="/privacy">Privacy</a>
