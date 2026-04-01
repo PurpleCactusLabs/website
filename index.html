@@ -40,16 +40,16 @@
       background: var(--deep-night);
       z-index: 0;
       gap: 40px;
-      padding-bottom: 26vh; /* shifts group up so more content peeks below */
+      padding-bottom: 10vh;
     }
 
     .hero-logo {
-      width: min(900px, 88vw);
+      width: min(680px, 72vw);
       opacity: 0;
       /* No CSS animation — JS fires it after tagline clears */
     }
 
-    /* Tagline — line-by-line clip reveal */
+    /* Tagline — line-by-line clip reveal, then slides down to make room for logo */
     .hero-tagline {
       font-size: clamp(28px, 4.5vw, 56px);
       font-weight: 700;
@@ -58,6 +58,12 @@
       text-align: center;
       padding: 0 24px;
       text-shadow: 0 0 40px rgba(168,85,247,0.2), 0 0 80px rgba(168,85,247,0.08);
+      transform: translateY(-12vh);
+    }
+
+    .hero-tagline.settled {
+      transform: translateY(0);
+      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .tagline-line {
@@ -1376,8 +1382,32 @@
       document.getElementById('tagline-line-2').classList.add('revealed');
     }, 1000);
 
+    // Tagline slides down after lines reveal
+    setTimeout(() => { tagline.classList.add('settled'); }, 1900);
+
+    const buzz = new Audio('neon buzz.m4a');
+    buzz.volume = 0.4;
+    const gestureEvents = ['mousedown','click','keydown','touchstart','pointerdown'];
+
+    // Prime audio on first real gesture (Chrome requires this)
+    function primeAudio() {
+      buzz.play().then(() => { buzz.pause(); buzz.currentTime = 0; }).catch(() => {});
+      gestureEvents.forEach(e => document.removeEventListener(e, primeAudio));
+    }
+    gestureEvents.forEach(e => document.addEventListener(e, primeAudio, { passive: true }));
+
     // Logo neon-on fires after both lines have revealed
     setTimeout(() => {
+      buzz.currentTime = 0;
+      buzz.play().catch(() => {
+        // Missed the window — play on next gesture instead
+        function playOnGesture() {
+          buzz.currentTime = 0;
+          buzz.play().catch(() => {});
+          gestureEvents.forEach(e => document.removeEventListener(e, playOnGesture));
+        }
+        gestureEvents.forEach(e => document.addEventListener(e, playOnGesture, { passive: true }));
+      });
       logo.style.animation = 'neon-on 2.6s ease-out forwards';
       logo.addEventListener('animationend', () => {
         logo.style.animation = '';
@@ -1386,10 +1416,10 @@
         logo.classList.add('pulsing');
         heroAnimDone = true;
       }, { once: true });
-    }, 1900);
+    }, 2700);
 
     // Scroll CTA fades in after logo starts
-    setTimeout(() => { scrollCta.classList.add('visible'); }, 2300);
+    setTimeout(() => { scrollCta.classList.add('visible'); }, 3100);
 
     // ── Scroll triggers the neon sequence; animationend chains steps (no setTimeout guessing) ──
     // Wide hysteresis: forward at 50vh, reverse at 15vh — plenty of buffer
