@@ -49,7 +49,7 @@
       /* No CSS animation — JS fires it after tagline clears */
     }
 
-    /* Tagline — appears AT logo center, pauses, then slides down to reveal logo */
+    /* Tagline — line-by-line clip reveal */
     .hero-tagline {
       font-size: clamp(28px, 4.5vw, 56px);
       font-weight: 700;
@@ -57,23 +57,17 @@
       line-height: 1.1;
       text-align: center;
       padding: 0 24px;
-      opacity: 0;
-      transform: translateY(-22vh); /* logo center position */
-      /* no transition by default — stages added by JS */
-    }
-
-    /* Stage 1: fade in in place — no movement */
-    .hero-tagline.visible {
-      opacity: 1;
       text-shadow: 0 0 40px rgba(168,85,247,0.2), 0 0 80px rgba(168,85,247,0.08);
-      color: #fff;
-      transition: opacity 0.8s ease;
     }
 
-    /* Stage 2: slide down to final position — added after pause */
-    .hero-tagline.settled {
-      transform: translateY(0);
-      transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+    .tagline-line {
+      display: block;
+      clip-path: inset(0 100% 0 0);
+      transition: clip-path 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .tagline-line.revealed {
+      clip-path: inset(0 0% 0 0);
     }
 
     /* Scroll indicator — "See what we make" + cascading chevrons */
@@ -1145,7 +1139,10 @@
   <!-- FIXED LOGO STAGE — stays behind everything -->
   <div class="logo-stage">
     <img src="PCL_neon_logo_dark.svg" alt="Purple Cactus Labs" class="hero-logo" id="hero-logo" />
-    <div class="hero-tagline" id="hero-tagline">Beautiful tools.<br />Built on <span class="notion-word" id="notion-word">Notion</span>.</div>
+    <div class="hero-tagline" id="hero-tagline">
+      <span class="tagline-line" id="tagline-line-1">Beautiful tools.</span>
+      <span class="tagline-line" id="tagline-line-2">Built on <span class="notion-word" id="notion-word">Notion</span>.</span>
+    </div>
     <div class="hero-scroll-indicator" id="hero-scroll-indicator">
       <a href="#content" class="hero-scroll-label">See what we make</a>
       <div class="hero-chevrons">
@@ -1369,13 +1366,17 @@
     const scrollCta  = document.getElementById('hero-scroll-indicator');
     let heroAnimDone = false;
 
-    // Step 1: tagline APPEARS at logo center — fade in only, no movement
-    setTimeout(() => { tagline.classList.add('visible'); }, 300);
+    // Line 1 reveals first
+    setTimeout(() => {
+      document.getElementById('tagline-line-1').classList.add('revealed');
+    }, 300);
 
-    // Step 3: tagline slides DOWN to its final position (making way for logo)
-    setTimeout(() => { tagline.classList.add('settled'); }, 1700);
+    // Line 2 follows with a deliberate pause
+    setTimeout(() => {
+      document.getElementById('tagline-line-2').classList.add('revealed');
+    }, 1000);
 
-    // Step 4: logo neon-on fires after tagline has cleared (~1100ms slide)
+    // Logo neon-on fires after both lines have revealed
     setTimeout(() => {
       logo.style.animation = 'neon-on 2.6s ease-out forwards';
       logo.addEventListener('animationend', () => {
@@ -1385,10 +1386,10 @@
         logo.classList.add('pulsing');
         heroAnimDone = true;
       }, { once: true });
-    }, 2900); // 1700ms slide start + 1100ms slide + 100ms buffer
+    }, 1900);
 
-    // Scroll CTA fades in just after the logo starts flickering (not waiting for full completion)
-    setTimeout(() => { scrollCta.classList.add('visible'); }, 3300);
+    // Scroll CTA fades in after logo starts
+    setTimeout(() => { scrollCta.classList.add('visible'); }, 2300);
 
     // ── Scroll triggers the neon sequence; animationend chains steps (no setTimeout guessing) ──
     // Wide hysteresis: forward at 50vh, reverse at 15vh — plenty of buffer
