@@ -417,6 +417,15 @@
       line-height: 1.7;
     }
 
+    .audience-footnote {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 15px;
+      color: rgba(255,255,255,0.28);
+      font-style: italic;
+      letter-spacing: 0.01em;
+    }
+
     /* ── WHY WE MAKE IT ──────────────────────────────────────── */
     .philosophy {
       background: rgba(168,85,247,0.025);
@@ -424,25 +433,66 @@
       border-bottom: 1px solid rgba(168,85,247,0.08);
     }
 
-    .traits {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 48px;
+    .mission-quote-wrap {
+      text-align: center;
+      margin: 0 auto 72px;
+      max-width: 780px;
+      position: relative;
     }
 
-    .trait-label {
-      font-size: 12px;
-      font-weight: 700;
+    .mission-quote-mark {
+      display: block;
+      font-size: 96px;
+      line-height: 0.6;
       color: var(--pcl-purple);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      opacity: 0.4;
+      font-family: Georgia, serif;
+      margin-bottom: 24px;
+      user-select: none;
+    }
+
+    .mission-quote {
+      font-size: clamp(20px, 2.4vw, 28px);
+      font-style: italic;
+      font-weight: 400;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.6;
+      margin: 0;
+      text-shadow: 0 0 60px rgba(168,85,247,0.15);
+    }
+
+    .convictions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(168,85,247,0.08);
+      border: 1px solid rgba(168,85,247,0.08);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .conviction {
+      padding: 32px;
+      background: rgba(168,85,247,0.025);
+      text-align: center;
+    }
+
+    .conviction-statement {
+      font-size: 17px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.88);
+      letter-spacing: -0.01em;
       margin-bottom: 10px;
     }
 
-    .trait-text {
-      font-size: 15px;
-      color: rgba(255,255,255,0.42);
-      line-height: 1.7;
+    .conviction-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.32);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 640px) {
+      .convictions { grid-template-columns: 1fr; }
     }
 
     /* ── FOOTER ──────────────────────────────────────────────── */
@@ -555,8 +605,8 @@
 
     <!-- WHO WE MAKE IT FOR -->
     <section class="section">
-      <div class="section-label">Who we make it for</div>
-      <h2 class="section-title">Built for people who run lean</h2>
+      <div class="section-label">Customers</div>
+      <h2 class="section-title">Who we make it for</h2>
       <div class="audience-grid">
         <div class="audience-card">
           <div class="audience-label">Solopreneurs</div>
@@ -581,24 +631,24 @@
     <!-- WHY WE MAKE IT -->
     <div class="philosophy">
       <div class="section">
-        <div class="section-label">Why we make it</div>
-        <h2 class="section-title">The way we think about software</h2>
-        <div class="traits">
-          <div>
-            <div class="trait-label">We use it too</div>
-            <div class="trait-text">Every tool starts as something we needed ourselves. We build it, use it daily, and make it good enough that anyone can.</div>
+        <div class="section-label">Mission</div>
+        <h2 class="section-title">Why we make it</h2>
+        <div class="mission-quote-wrap">
+          <span class="mission-quote-mark">"</span>
+          <blockquote class="mission-quote">Every tool starts as something we needed ourselves. We build it, use it daily, and make it good enough that anyone can.</blockquote>
+        </div>
+        <div class="convictions">
+          <div class="conviction">
+            <div class="conviction-statement">One thing, done well.</div>
+            <div class="conviction-sub">Every feature earns its place. No dashboards, no upsells, no bloat.</div>
           </div>
-          <div>
-            <div class="trait-label">Focused</div>
-            <div class="trait-text">One thing, done well. Every feature earns its place. No dashboards, no upsells, no bloat.</div>
+          <div class="conviction">
+            <div class="conviction-statement">Design is how it works.</div>
+            <div class="conviction-sub">Great UI isn't an afterthought — it's the product. Not just how it looks.</div>
           </div>
-          <div>
-            <div class="trait-label">Crafted</div>
-            <div class="trait-text">Great UI isn't an afterthought — it's the product. Design is how it works, not just how it looks.</div>
-          </div>
-          <div>
-            <div class="trait-label">Priced fairly</div>
-            <div class="trait-text">We price so the build-vs-buy question isn't worth asking. You've got better things to do.</div>
+          <div class="conviction">
+            <div class="conviction-statement">You've got better things to do.</div>
+            <div class="conviction-sub">We price so the build-vs-buy question isn't worth asking.</div>
           </div>
         </div>
       </div>
