@@ -40,6 +40,7 @@
       background: var(--deep-night);
       z-index: 0;
       gap: 40px;
+      padding-bottom: 26vh; /* shifts group up so more content peeks below */
     }
 
     .hero-logo {
@@ -75,6 +76,38 @@
       transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
+    /* Scroll indicator — "See what we make" + cascading chevrons */
+    .hero-scroll-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .hero-scroll-indicator.visible { opacity: 1; }
+
+    .hero-scroll-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+    }
+
+    .hero-chevrons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+    }
+
+    .hero-chevrons svg:nth-child(1) { animation: chevron-flow 1.8s ease-in-out infinite 0s; }
+    .hero-chevrons svg:nth-child(2) { animation: chevron-flow 1.8s ease-in-out infinite 0.36s; }
+    .hero-chevrons svg:nth-child(3) { animation: chevron-flow 1.8s ease-in-out infinite 0.72s; }
+
     .hero-tagline .notion-word {
       display: inline-block;
       background: linear-gradient(135deg, #FF88FF, #CC55FF);
@@ -84,16 +117,6 @@
       /* inherits opacity from tagline — no individual animation */
     }
 
-    .scroll-cue {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: rgba(255,255,255,0.2);
-      font-size: 20px;
-      text-decoration: none;
-      animation: tagline-in 0.8s ease-out 3s forwards, bob 2s ease-in-out 3.8s infinite;
-    }
 
     /* Neon turning on — flicker then hold */
     @keyframes neon-on {
@@ -132,9 +155,9 @@
       50%       { opacity: 1; filter: drop-shadow(0 0 18px #A855F7) drop-shadow(0 0 36px #D946EF) drop-shadow(0 0 60px rgba(217,70,239,0.7)); }
     }
 
-    @keyframes bob {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50%       { transform: translateX(-50%) translateY(6px); }
+    @keyframes chevron-flow {
+      0%, 60%, 100% { opacity: 0.15; transform: translateY(0); }
+      30%            { opacity: 0.9;  transform: translateY(3px); }
     }
 
     /* Neon cutting out — flicker then die */
@@ -421,7 +444,14 @@
   <div class="logo-stage">
     <img src="PCL_neon_logo_dark.svg" alt="Purple Cactus Labs" class="hero-logo" id="hero-logo" />
     <div class="hero-tagline" id="hero-tagline">Beautiful tools that make<br /><span class="notion-word" id="notion-word">Notion</span> do more.</div>
-    <a href="#content" class="scroll-cue">↓</a>
+    <div class="hero-scroll-indicator" id="hero-scroll-indicator">
+      <a href="#content" class="hero-scroll-label">See what we make</a>
+      <div class="hero-chevrons">
+        <svg width="22" height="13" viewBox="0 0 22 13"><polyline points="1,1 11,11 21,1" fill="none" stroke="#A855F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="22" height="13" viewBox="0 0 22 13"><polyline points="1,1 11,11 21,1" fill="none" stroke="#A855F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="22" height="13" viewBox="0 0 22 13"><polyline points="1,1 11,11 21,1" fill="none" stroke="#A855F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
   </div>
 
   <!-- TRANSPARENT SPACER — shows fixed logo behind it -->
@@ -432,7 +462,6 @@
 
     <!-- NAV -->
     <nav>
-      <div class="nav-wordmark" id="nav-wordmark">Purple Cactus Labs</div>
       <!-- Logo teleports here — centered absolutely -->
       <div class="nav-center">
         <img src="PCL_neon_logo_dark.svg" alt="Purple Cactus Labs" class="nav-logo" id="nav-logo" />
@@ -528,9 +557,9 @@
     const logo    = document.getElementById('hero-logo');
     const tagline = document.getElementById('hero-tagline');
 
-    const navLogo     = document.getElementById('nav-logo');
-    const navWordmark = document.getElementById('nav-wordmark');
-    let heroAnimDone  = false;
+    const navLogo    = document.getElementById('nav-logo');
+    const scrollCta  = document.getElementById('hero-scroll-indicator');
+    let heroAnimDone = false;
 
     // Step 1: tagline APPEARS at logo center — fade in only, no movement
     setTimeout(() => { tagline.classList.add('visible'); }, 300);
@@ -547,6 +576,9 @@
         logo.style.filter    = 'drop-shadow(0 0 14px #A855F7) drop-shadow(0 0 28px rgba(217,70,239,0.45))';
         logo.classList.add('pulsing');
         heroAnimDone = true;
+
+        // Fade in scroll indicator after logo is fully on
+        scrollCta.classList.add('visible');
       }, { once: true });
     }, 2900); // 1700ms slide start + 1100ms slide + 100ms buffer
 
@@ -561,11 +593,9 @@
       // Step 1: hero neon-off
       logo.classList.remove('pulsing');
       logo.style.animation = 'neon-off 0.6s ease-out forwards';
-      navWordmark.style.opacity = '0';
 
       // Step 2: when hero is fully off → nav logo neon-on
       logo.addEventListener('animationend', () => {
-        navWordmark.style.display = 'none';
         navLogo.style.animation = 'neon-on 1.6s ease-out forwards';
 
         // Step 3: when nav logo is fully on → lock in state
@@ -589,8 +619,6 @@
       navLogo.addEventListener('animationend', () => {
         navLogo.style.animation = '';
         navLogo.style.opacity   = '0';
-        navWordmark.style.display   = '';
-        navWordmark.style.opacity   = '1';
 
         logo.style.animation = 'neon-on 0.8s ease-out forwards';
 
