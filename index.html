@@ -518,6 +518,121 @@
       .one-idea { flex-direction: column; gap: 10px; }
     }
 
+    /* ── TESTIMONIAL ─────────────────────────────────────────── */
+    .testimonial-band {
+      border-top: 1px solid rgba(168,85,247,0.08);
+      padding: 80px 48px;
+    }
+
+    .testimonial-card {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--dark-violet);
+      border: 1px solid rgba(168,85,247,0.15);
+      border-radius: 20px;
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 148px 1fr;
+      gap: 48px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Big decorative quote mark faded into background */
+    .testimonial-card::before {
+      content: '\201C';
+      position: absolute;
+      top: -40px;
+      right: 24px;
+      font-size: 280px;
+      line-height: 1;
+      font-family: Georgia, serif;
+      color: var(--pcl-purple);
+      opacity: 0.06;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .testimonial-person {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      min-width: 120px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .testimonial-avatar {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center top;
+      border: 2px solid rgba(168,85,247,0.35);
+      animation: avatar-glow 3s ease-in-out infinite;
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes avatar-glow {
+      0%, 100% { box-shadow: 0 0 16px rgba(168,85,247,0.3), 0 0 32px rgba(168,85,247,0.15); }
+      50%       { box-shadow: 0 0 28px rgba(217,70,239,0.55), 0 0 56px rgba(168,85,247,0.25); }
+    }
+
+    .testimonial-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.8);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .testimonial-title {
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      margin-top: -10px;
+      white-space: nowrap;
+    }
+
+    .testimonial-quote {
+      font-size: clamp(16px, 1.8vw, 20px);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.75;
+      position: relative;
+      z-index: 1;
+      border-left: 1px solid rgba(168,85,247,0.2);
+      padding-left: 40px;
+    }
+
+    .testimonial-setup {
+      color: rgba(255,255,255,0.78);
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .testimonial-payoff {
+      color: rgba(255,255,255,0.82);
+      display: block;
+    }
+
+    .testimonial-payoff .highlight {
+      font-style: normal;
+      font-weight: 700;
+      background: linear-gradient(135deg, #D946EF, #A855F7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    @media (max-width: 640px) {
+      .testimonial-card { grid-template-columns: 1fr; text-align: center; }
+      .testimonial-divider { display: none; }
+    }
+
     /* ── CONTACT + WHERE ────────────────────────────────────── */
     .contact-band {
       border-top: 1px solid rgba(168,85,247,0.08);
@@ -814,31 +929,6 @@
 
     <hr />
 
-    <!-- WHO WE MAKE IT FOR -->
-    <section class="section">
-      <div class="section-label">Customers</div>
-      <h2 class="section-title">Who we make it for</h2>
-      <div class="audience-grid">
-        <div class="audience-card">
-          <div class="audience-label">Solopreneurs</div>
-          <div class="audience-headline">You're the whole team.</div>
-          <div class="audience-text">Sales, ops, client work — you're running all of it. Our tools cut the overhead so you can stay in your zone.</div>
-        </div>
-        <div class="audience-card">
-          <div class="audience-label">Freelancers</div>
-          <div class="audience-headline">Relationships are your business.</div>
-          <div class="audience-text">We make it easier to keep track of people, threads, and context — without leaving where the work already happens.</div>
-        </div>
-        <div class="audience-card">
-          <div class="audience-label">Startup Teams</div>
-          <div class="audience-headline">Small team, big surface area.</div>
-          <div class="audience-text">You've already invested in your stack. We make it smarter — without adding another tool to manage.</div>
-        </div>
-      </div>
-    </section>
-
-    <hr />
-
     <!-- WHY WE MAKE IT -->
     <div class="philosophy">
       <div class="section">
@@ -868,6 +958,46 @@
             <div class="pillar-sub">We price so the build-vs-buy question isn't worth asking. You've got a business to run.</div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- WHO WE MAKE IT FOR -->
+    <section class="section">
+      <div class="section-label">Customers</div>
+      <h2 class="section-title">Who we make it for</h2>
+      <div class="audience-grid">
+        <div class="audience-card">
+          <div class="audience-label">Solopreneurs</div>
+          <div class="audience-headline">You're the whole team.</div>
+          <div class="audience-text">Sales, ops, client work — you're running all of it. Our tools cut the overhead so you can stay in your zone.</div>
+        </div>
+        <div class="audience-card">
+          <div class="audience-label">Freelancers</div>
+          <div class="audience-headline">Relationships are your business.</div>
+          <div class="audience-text">We make it easier to keep track of people, threads, and context — without leaving where the work already happens.</div>
+        </div>
+        <div class="audience-card">
+          <div class="audience-label">Startup Teams</div>
+          <div class="audience-headline">Small team, big surface area.</div>
+          <div class="audience-text">You've already invested in your stack. We make it smarter — without adding another tool to manage.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIAL -->
+    <div class="testimonial-band">
+      <div class="testimonial-card">
+        <div class="testimonial-person">
+          <img src="Maren-1.jpg" alt="Maren Engh" class="testimonial-avatar" />
+          <div class="testimonial-name">Maren Engh</div>
+          <div class="testimonial-title">Co-Founder, Voyager Guru</div>
+        </div>
+        <p class="testimonial-quote">
+          <span class="testimonial-setup">We chose Notion over a traditional CRM — it had its drawbacks.</span>
+          <span class="testimonial-payoff">But then <span class="highlight">Purple Cactus Labs</span> made it better than any CRM we could have bought.</span>
+        </p>
       </div>
     </div>
 
