@@ -874,6 +874,8 @@
     /* ── CONTACT + WHERE ────────────────────────────────────── */
     .contact-band {
       border-top: 1px solid rgba(168,85,247,0.08);
+      position: relative;
+      z-index: 1;
     }
 
     .contact-inner {
@@ -1168,9 +1170,11 @@
     @media (max-width: 640px) {
       nav { padding: 16px 24px; }
       .nav-links a:not(.nav-cta) { display: none; }
+      .nav-cta { display: none; }
       .section { padding: 64px 24px; }
       footer { flex-direction: column; gap: 16px; text-align: center; }
       .footer-links { flex-wrap: wrap; justify-content: center; }
+      .site-cta-tab { right: 16px; }
     }
   </style>
 </head>
