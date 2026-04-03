@@ -915,61 +915,65 @@
   </footer>
 
   <script>
+    // Hide browser immediately via inline style so there's no flash
     (function() {
-      const browser  = document.getElementById('hero-browser');
-      const line1    = document.getElementById('hero-line-1');
-      const line2    = document.getElementById('hero-line-2');
-      const heroEm   = document.getElementById('hero-em');
-      const deferred = document.querySelectorAll('.hero-deferred');
-
-      // Step 1: Browser appears immediately, positioned up where headline is
-      // Calculate how far to shift it up (from its resting spot to center-ish of viewport)
-      requestAnimationFrame(() => {
-        const browserRect = browser.getBoundingClientRect();
-        const viewportCenter = window.innerHeight * 0.48;
-        const browserCenter = browserRect.top + browserRect.height / 2;
-        const shiftUp = browserCenter - viewportCenter;
-
-        // Start browser shifted up, invisible
-        browser.style.transition = 'none';
-        browser.style.transform = 'perspective(1200px) rotateX(3deg) translateY(' + (-shiftUp) + 'px)';
-        browser.style.opacity = '0';
-
-        // Step 1: Browser fades in
-        setTimeout(() => {
-          browser.style.transition = 'opacity 0.6s ease';
-          browser.style.opacity = '1';
-        }, 100);
-
-        // Step 2: After a beat, slide browser down to resting position
-        setTimeout(() => {
-          browser.style.transition = 'transform 1s cubic-bezier(0.22, 1, 0.36, 1)';
-          browser.style.transform = 'perspective(1200px) rotateX(3deg) translateY(0)';
-        }, 900);
-
-        // Step 3: As browser starts sliding, reveal headline line 1
-        setTimeout(() => {
-          line1.classList.add('revealed');
-        }, 1000);
-
-        // Step 4: Tighter pause — then line 2 "inside Gmail" reveals
-        setTimeout(() => {
-          line2.classList.add('revealed');
-        }, 1550);
-
-        // Step 5: Em glow hit on "inside Gmail"
-        setTimeout(() => {
-          heroEm.classList.add('em-glow-hit');
-        }, 2100);
-
-        // Step 6: Badge, subtitle, CTAs fade in
-        setTimeout(() => {
-          deferred.forEach((el, i) => {
-            setTimeout(() => el.classList.add('visible'), i * 120);
-          });
-        }, 2400);
-      });
+      var b = document.getElementById('hero-browser');
+      b.style.opacity = '0';
     })();
+
+    // Run sequence after all assets (images, fonts) are loaded
+    window.addEventListener('load', function() {
+      var browser  = document.getElementById('hero-browser');
+      var line1    = document.getElementById('hero-line-1');
+      var line2    = document.getElementById('hero-line-2');
+      var heroEm   = document.getElementById('hero-em');
+      var deferred = document.querySelectorAll('.hero-deferred');
+
+      // Measure where browser naturally sits vs where we want it (centered in viewport)
+      var browserRect = browser.getBoundingClientRect();
+      var viewportCenter = window.innerHeight * 0.48;
+      var browserCenter = browserRect.top + browserRect.height / 2;
+      var shiftUp = browserCenter - viewportCenter;
+
+      // Position browser up, still invisible
+      browser.style.transition = 'none';
+      browser.style.transform = 'perspective(1200px) rotateX(3deg) translateY(' + (-shiftUp) + 'px)';
+
+      // Force reflow so the transform applies before we transition
+      browser.offsetHeight;
+
+      // Step 1: Browser fades in
+      browser.style.transition = 'opacity 0.6s ease';
+      browser.style.opacity = '1';
+
+      // Step 2: After a beat, slide browser down to resting position
+      setTimeout(function() {
+        browser.style.transition = 'transform 1s cubic-bezier(0.22, 1, 0.36, 1)';
+        browser.style.transform = 'perspective(1200px) rotateX(3deg) translateY(0)';
+      }, 800);
+
+      // Step 3: As browser starts sliding, reveal headline line 1
+      setTimeout(function() {
+        line1.classList.add('revealed');
+      }, 900);
+
+      // Step 4: Tighter pause — then line 2 "inside Gmail" reveals
+      setTimeout(function() {
+        line2.classList.add('revealed');
+      }, 1450);
+
+      // Step 5: Em glow hit on "inside Gmail"
+      setTimeout(function() {
+        heroEm.classList.add('em-glow-hit');
+      }, 2000);
+
+      // Step 6: Badge, subtitle, CTAs fade in
+      setTimeout(function() {
+        deferred.forEach(function(el, i) {
+          setTimeout(function() { el.classList.add('visible'); }, i * 120);
+        });
+      }, 2300);
+    });
   </script>
 
 </body>
