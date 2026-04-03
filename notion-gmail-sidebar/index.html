@@ -35,40 +35,63 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20px 48px;
-      border-bottom: 1px solid rgba(168,85,247,0.12);
+      padding: 24px 48px;
+      border-bottom: 1px solid rgba(168,85,247,0.1);
       position: sticky;
       top: 0;
-      background: rgba(13,11,20,0.92);
+      background: rgba(13,11,20,0.95);
       backdrop-filter: blur(12px);
       z-index: 100;
     }
 
-    .nav-logo {
-      font-size: 15px;
-      font-weight: 600;
-      color: #fff;
-      letter-spacing: 0.01em;
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
     }
 
-    .nav-logo span {
-      color: var(--pcl-purple);
+    .nav-links a {
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: #fff; }
+
+    .nav-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .nav-logo-img {
+      height: 52px;
+      width: auto;
+      display: block;
+      filter: drop-shadow(0 0 10px #A855F7) drop-shadow(0 0 20px rgba(217,70,239,0.45));
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
     }
 
     .nav-cta {
       background: var(--pcl-purple);
       color: #fff;
-      padding: 8px 20px;
+      padding: 8px 18px;
       border-radius: 7px;
       text-decoration: none;
       font-size: 14px;
       font-weight: 600;
-      box-shadow: 0 0 18px rgba(168,85,247,0.28);
+      box-shadow: 0 0 16px rgba(168,85,247,0.28);
       transition: box-shadow 0.2s, transform 0.2s;
     }
 
     .nav-cta:hover {
-      box-shadow: 0 0 28px rgba(168,85,247,0.45);
+      box-shadow: 0 0 28px rgba(168,85,247,0.5);
       transform: translateY(-1px);
     }
 
@@ -81,11 +104,45 @@
       font-style: italic;
     }
 
-    /* NAV LOGO IMAGE */
-    .nav-logo-img {
-      height: 64px;
-      width: auto;
+    /* HERO ENTRANCE — JS-driven sequence */
+
+    /* Browser starts centered in viewport, then slides to resting position */
+    .hero-browser {
+      transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Headline lines — hidden until revealed */
+    .hero-line {
       display: block;
+      clip-path: inset(0 100% 0 0);
+      transition: clip-path 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .hero-line.revealed {
+      clip-path: inset(0 0% 0 0);
+    }
+
+    /* "inside Gmail" em glow hit */
+    @keyframes em-glow {
+      0%   { text-shadow: none; }
+      40%  { text-shadow: 0 0 30px rgba(168,85,247,0.6), 0 0 60px rgba(217,70,239,0.3); }
+      100% { text-shadow: none; }
+    }
+
+    .em-glow-hit {
+      animation: em-glow 1.2s ease forwards;
+    }
+
+    /* Everything else hidden until browser + headline sequence completes */
+    .hero-deferred {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .hero-deferred.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* HERO */
@@ -149,16 +206,16 @@
       background: var(--pcl-purple);
       color: #fff;
       padding: 14px 32px;
-      border-radius: 8px;
+      border-radius: 9px;
       text-decoration: none;
       font-size: 16px;
       font-weight: 600;
-      box-shadow: 0 0 24px rgba(168,85,247,0.32);
-      transition: box-shadow 0.2s, transform 0.2s;
+      box-shadow: 0 0 20px rgba(168,85,247,0.3), 0 0 48px rgba(168,85,247,0.12);
+      transition: box-shadow 0.25s, transform 0.25s;
     }
 
     .btn-primary:hover {
-      box-shadow: 0 0 36px rgba(168,85,247,0.5);
+      box-shadow: 0 0 36px rgba(168,85,247,0.55), 0 0 72px rgba(168,85,247,0.2);
       transform: translateY(-1px);
     }
 
@@ -182,9 +239,9 @@
     .hero-browser {
       max-width: 900px;
       margin: 0 auto;
-      border-radius: 12px;
+      border-radius: 16px;
       overflow: hidden;
-      border: 1px solid rgba(168,85,247,0.22);
+      border: 1px solid rgba(168,85,247,0.3);
       box-shadow:
         0 0 0 1px rgba(0,0,0,0.3),
         0 0 80px rgba(168,85,247,0.18),
@@ -192,6 +249,18 @@
         0 40px 80px rgba(0,0,0,0.5);
       transform: perspective(1200px) rotateX(3deg);
       transform-origin: center top;
+      position: relative;
+    }
+
+    /* Top shimmer line on browser mockup */
+    .hero-browser::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(217,70,239,0.6), rgba(168,85,247,0.5), transparent);
+      border-radius: 99px;
+      z-index: 1;
     }
 
     .browser-chrome {
@@ -256,16 +325,16 @@
     .section-label {
       text-align: center;
       color: var(--pcl-purple);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .section-title {
       text-align: center;
-      font-size: clamp(28px, 3.5vw, 40px);
+      font-size: clamp(26px, 3vw, 38px);
       font-weight: 700;
       letter-spacing: -0.02em;
       margin-bottom: 56px;
@@ -279,8 +348,8 @@
 
     .step {
       background: var(--dark-violet);
-      border: 1px solid rgba(168,85,247,0.13);
-      border-radius: 9px;
+      border: 1px solid rgba(168,85,247,0.12);
+      border-radius: 14px;
       padding: 32px;
     }
 
@@ -311,6 +380,114 @@
       line-height: 1.6;
     }
 
+    /* VIDEO EXPLAINER — card layout */
+    .video-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px 80px;
+    }
+
+    .video-card {
+      background: var(--dark-violet);
+      border: 1px solid rgba(168,85,247,0.2);
+      border-radius: 20px;
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+      position: relative;
+      box-shadow:
+        0 0 60px rgba(168,85,247,0.1),
+        0 0 120px rgba(168,85,247,0.05),
+        0 24px 48px rgba(0,0,0,0.4);
+    }
+
+    /* Top shimmer line */
+    .video-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(217,70,239,0.5), rgba(168,85,247,0.4), transparent);
+      border-radius: 99px;
+      z-index: 1;
+    }
+
+    .video-info {
+      flex: 0 0 300px;
+      padding: 48px 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Subtle vertical divider */
+    .video-info::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 10%; bottom: 10%;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, rgba(168,85,247,0.15), transparent);
+    }
+
+    .video-info-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--pcl-purple);
+      margin-bottom: 16px;
+    }
+
+    .video-info-heading {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .video-info-body {
+      font-size: 15px;
+      color: rgba(255,255,255,0.42);
+      line-height: 1.7;
+    }
+
+    .video-panel {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      overflow: hidden;
+      background: rgba(0,0,0,0.3);
+    }
+
+    /* Fade left edge into info panel */
+    .video-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 60px;
+      background: linear-gradient(90deg, var(--dark-violet), transparent);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .video-panel video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top left;
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .video-card { flex-direction: column; }
+      .video-info { flex: none; padding: 32px 28px; }
+      .video-info::after { display: none; }
+      .video-panel { min-height: 220px; }
+      .video-panel::before { display: none; }
+    }
+
     /* FEATURES */
     .features-grid {
       display: grid;
@@ -320,14 +497,32 @@
 
     .feature {
       background: var(--dark-violet);
-      border: 1px solid rgba(168,85,247,0.13);
-      border-radius: 9px;
+      border: 1px solid rgba(168,85,247,0.12);
+      border-radius: 14px;
       padding: 28px 32px;
     }
 
     .feature-icon {
-      font-size: 24px;
-      margin-bottom: 14px;
+      width: 40px;
+      height: 40px;
+      background: rgba(168,85,247,0.1);
+      border: 1px solid rgba(168,85,247,0.18);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      color: var(--pcl-purple);
+    }
+
+    .feature-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .feature h3 {
@@ -345,7 +540,7 @@
     /* DIVIDER */
     .divider {
       border: none;
-      border-top: 1px solid rgba(168,85,247,0.1);
+      border-top: 1px solid rgba(168,85,247,0.08);
       margin: 0 48px;
     }
 
@@ -358,10 +553,24 @@
 
     .pricing-card {
       background: var(--dark-violet);
-      border: 1px solid rgba(168,85,247,0.25);
-      border-radius: 12px;
+      border: 1px solid rgba(168,85,247,0.3);
+      border-radius: 16px;
       padding: 48px;
-      box-shadow: 0 0 48px rgba(168,85,247,0.08);
+      box-shadow:
+        0 0 60px rgba(168,85,247,0.12),
+        0 0 120px rgba(168,85,247,0.06),
+        0 24px 48px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    /* Shimmer line on pricing card */
+    .pricing-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 15%; right: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(217,70,239,0.5), rgba(168,85,247,0.4), transparent);
+      border-radius: 99px;
     }
 
     .price {
@@ -469,30 +678,41 @@
 
     /* FOOTER */
     footer {
-      border-top: 1px solid rgba(168,85,247,0.1);
+      border-top: 1px solid rgba(168,85,247,0.08);
       padding: 32px 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.25);
       font-size: 13px;
+      background: var(--deep-night);
     }
 
     footer a {
-      color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.25);
       text-decoration: none;
+      transition: color 0.2s;
     }
 
     footer a:hover {
       color: var(--pcl-purple);
     }
 
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
     @media (max-width: 640px) {
       nav { padding: 16px 24px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .nav-center { position: static; transform: none; }
+      .nav-logo-img { height: 40px; }
       .hero { padding: 64px 24px 48px; }
       .section { padding: 60px 24px; }
       .divider { margin: 0 24px; }
-      footer { flex-direction: column; gap: 12px; text-align: center; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
       .hero-browser { transform: none; }
     }
   </style>
@@ -501,24 +721,34 @@
 
   <!-- NAV -->
   <nav>
-    <div class="nav-logo">
-      <img src="/PCL_neon_logo_dark.svg" alt="Purple Cactus Labs" class="nav-logo-img" />
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#features">Features</a>
     </div>
-    <a href="#pricing" class="nav-cta">Get started — $5/mo</a>
+    <div class="nav-center">
+      <a href="/"><img src="../PCL_neon_logo_dark.svg" alt="Purple Cactus Labs" class="nav-logo-img" /></a>
+    </div>
+    <div class="nav-right">
+      <a href="#pricing" class="nav-cta">Get started — $5/mo</a>
+    </div>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
-    <div class="badge">Chrome Extension · Works with any Notion database</div>
-    <h1>Your <span class="notion-word">Notion</span> CRM,<br /><em>inside Gmail.</em></h1>
-    <p class="hero-sub">Stop switching tabs.<br />Start knowing who you're talking to.</p>
-    <div class="hero-actions">
+    <div class="badge hero-deferred">Chrome Extension · Works with any Notion database</div>
+    <h1>
+      <span class="hero-line" id="hero-line-1">Your <span class="notion-word">Notion</span> CRM,</span>
+      <span class="hero-line" id="hero-line-2"><em id="hero-em">inside Gmail.</em></span>
+    </h1>
+    <p class="hero-sub hero-deferred">Stop switching tabs.<br />Start knowing who you're talking to.</p>
+    <div class="hero-actions hero-deferred">
       <a href="#pricing" class="btn-primary">Start for $5/month</a>
       <a href="#how-it-works" class="btn-secondary">See how it works →</a>
     </div>
 
     <!-- Browser mockup wrapper -->
-    <div class="hero-browser">
+    <div class="hero-browser" id="hero-browser">
       <div class="browser-chrome">
         <div class="browser-dots">
           <span></span><span></span><span></span>
@@ -526,7 +756,7 @@
         <div class="browser-bar">mail.google.com</div>
       </div>
       <div class="browser-body">
-        <img src="/hero.png" alt="Notion CRM Sidebar showing client data inside Gmail" />
+        <img src="../hero.png" alt="Notion CRM Sidebar showing client data inside Gmail" />
       </div>
     </div>
   </section>
@@ -556,6 +786,22 @@
     </div>
   </section>
 
+  <!-- VIDEO EXPLAINER -->
+  <div class="video-section">
+    <div class="video-card">
+      <div class="video-info">
+        <div class="video-info-label">See it in action</div>
+        <h3 class="video-info-heading">Your CRM data, right where you work.</h3>
+        <p class="video-info-body">Open an email, see the contact. No tab-switching, no searching — it just appears.</p>
+      </div>
+      <div class="video-panel">
+        <video autoplay muted loop playsinline>
+          <source src="../Notion CRM- Promo Vid.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  </div>
+
   <hr class="divider" />
 
   <!-- FEATURES -->
@@ -564,32 +810,32 @@
     <h2 class="section-title">Built for people who live in their inbox.</h2>
     <div class="features-grid">
       <div class="feature">
-        <div class="feature-icon">⚡</div>
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
         <h3>Instant lookup</h3>
         <p>Matches sender email to your Notion database in real time. No clicks, no searching.</p>
       </div>
       <div class="feature">
-        <div class="feature-icon">🗂️</div>
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M2 9h20M9 21V9"/></svg></div>
         <h3>Related records</h3>
         <p>See linked database entries — trips, deals, projects — right below the contact card.</p>
       </div>
       <div class="feature">
-        <div class="feature-icon">🔧</div>
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
         <h3>Fully configurable</h3>
         <p>Choose which fields to display. Works with any Notion database schema, no changes required.</p>
       </div>
       <div class="feature">
-        <div class="feature-icon">🔗</div>
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
         <h3>Open in Notion</h3>
         <p>One click takes you directly to the full record. Deep link, no hunting.</p>
       </div>
       <div class="feature">
-        <div class="feature-icon">🔒</div>
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
         <h3>Private by design</h3>
         <p>Your Notion token and data never leave your browser. No third-party servers see your CRM.</p>
       </div>
       <div class="feature">
-        <div class="feature-icon">🌵</div>
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
         <h3>Zero bloat</h3>
         <p>Does one thing, does it well. No dashboards, no onboarding flows, no upsells inside the tool.</p>
       </div>
@@ -659,13 +905,72 @@
 
   <!-- FOOTER -->
   <footer>
-    <div>© 2026 Purple Cactus Labs</div>
-    <div style="display:flex; gap:24px;">
-      <a href="/privacy">Privacy Policy</a>
-      <a href="/terms">Terms of Service</a>
+    <div>© 2026 Purple Cactus Labs · Las Vegas, NV</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
       <a href="mailto:hello@purplecactus.io">hello@purplecactus.io</a>
     </div>
   </footer>
+
+  <script>
+    (function() {
+      const browser  = document.getElementById('hero-browser');
+      const line1    = document.getElementById('hero-line-1');
+      const line2    = document.getElementById('hero-line-2');
+      const heroEm   = document.getElementById('hero-em');
+      const deferred = document.querySelectorAll('.hero-deferred');
+
+      // Step 1: Browser appears immediately, positioned up where headline is
+      // Calculate how far to shift it up (from its resting spot to center-ish of viewport)
+      requestAnimationFrame(() => {
+        const browserRect = browser.getBoundingClientRect();
+        const viewportCenter = window.innerHeight * 0.48;
+        const browserCenter = browserRect.top + browserRect.height / 2;
+        const shiftUp = browserCenter - viewportCenter;
+
+        // Start browser shifted up, invisible
+        browser.style.transition = 'none';
+        browser.style.transform = 'perspective(1200px) rotateX(3deg) translateY(' + (-shiftUp) + 'px)';
+        browser.style.opacity = '0';
+
+        // Step 1: Browser fades in
+        setTimeout(() => {
+          browser.style.transition = 'opacity 0.6s ease';
+          browser.style.opacity = '1';
+        }, 100);
+
+        // Step 2: After a beat, slide browser down to resting position
+        setTimeout(() => {
+          browser.style.transition = 'transform 1s cubic-bezier(0.22, 1, 0.36, 1)';
+          browser.style.transform = 'perspective(1200px) rotateX(3deg) translateY(0)';
+        }, 900);
+
+        // Step 3: As browser starts sliding, reveal headline line 1
+        setTimeout(() => {
+          line1.classList.add('revealed');
+        }, 1000);
+
+        // Step 4: Tighter pause — then line 2 "inside Gmail" reveals
+        setTimeout(() => {
+          line2.classList.add('revealed');
+        }, 1550);
+
+        // Step 5: Em glow hit on "inside Gmail"
+        setTimeout(() => {
+          heroEm.classList.add('em-glow-hit');
+        }, 2100);
+
+        // Step 6: Badge, subtitle, CTAs fade in
+        setTimeout(() => {
+          deferred.forEach((el, i) => {
+            setTimeout(() => el.classList.add('visible'), i * 120);
+          });
+        }, 2400);
+      });
+    })();
+  </script>
 
 </body>
 </html>
