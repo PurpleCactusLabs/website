@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Notion CRM Sidebar — Your CRM, inside Gmail</title>
   <meta name="description" content="See your Notion CRM data instantly, without leaving Gmail. $5/month." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -143,6 +146,66 @@
     .hero-deferred.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    /* CHROME WEB STORE BADGE */
+    .cws-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 9px;
+      padding: 12px 20px 12px 14px;
+      text-decoration: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .cws-badge:hover {
+      border-color: rgba(168,85,247,0.35);
+      box-shadow: 0 0 16px rgba(168,85,247,0.12);
+    }
+
+    .cws-badge img {
+      height: 22px;
+      width: auto;
+      flex-shrink: 0;
+    }
+
+    .cws-badge-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1.2;
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      white-space: nowrap;
+    }
+
+    .cws-badge-sub {
+      font-size: 10px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.01em;
+    }
+
+    .cws-badge-main {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: -0.01em;
+    }
+
+    .cws-badge:hover .cws-badge-sub {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .cws-badge:hover .cws-badge-main {
+      color: rgba(255,255,255,0.9);
+    }
+
+    .cws-badge-wrap {
+      margin-top: 20px;
+      text-align: center;
     }
 
     /* HERO */
@@ -736,7 +799,6 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="badge hero-deferred">Chrome Extension · Works with any Notion database</div>
     <h1>
       <span class="hero-line" id="hero-line-1">Your <span class="notion-word">Notion</span> CRM,</span>
       <span class="hero-line" id="hero-line-2"><em id="hero-em">inside Gmail.</em></span>
@@ -744,7 +806,10 @@
     <p class="hero-sub hero-deferred">Stop switching tabs.<br />Start knowing who you're talking to.</p>
     <div class="hero-actions hero-deferred">
       <a href="#pricing" class="btn-primary">Start for $5/month</a>
-      <a href="#how-it-works" class="btn-secondary">See how it works →</a>
+      <a href="https://chromewebstore.google.com/detail/notion-gmail-sidebar/jbeempeigcedfdpbpiphohpjlfclkedd" class="cws-badge" target="_blank" rel="noopener">
+        <img src="../google chrome-webstore-icon.png" alt="Chrome Web Store" />
+        <span class="cws-badge-text"><span class="cws-badge-sub">Available in the</span><span class="cws-badge-main">Chrome Web Store</span></span>
+      </a>
     </div>
 
     <!-- Browser mockup wrapper -->
@@ -852,6 +917,12 @@
       <div class="pricing-card">
         <div class="price"><sup>$</sup>5</div>
         <div class="price-period">per month · cancel anytime</div>
+        <div class="cws-badge-wrap" style="margin-top: 24px; margin-bottom: 28px;">
+          <a href="https://chromewebstore.google.com/detail/notion-gmail-sidebar/jbeempeigcedfdpbpiphohpjlfclkedd" class="cws-badge" target="_blank" rel="noopener">
+            <img src="../google chrome-webstore-icon.png" alt="Chrome Web Store" />
+            <span class="cws-badge-text"><span class="cws-badge-sub">Available in the</span><span class="cws-badge-main">Chrome Web Store</span></span>
+          </a>
+        </div>
         <ul class="pricing-features">
           <li>Notion CRM Sidebar Chrome extension</li>
           <li>Connect any Notion database</li>
