@@ -125,16 +125,7 @@
       clip-path: inset(0 0% 0 0);
     }
 
-    /* "inside Gmail" em glow hit */
-    @keyframes em-glow {
-      0%   { text-shadow: none; }
-      40%  { text-shadow: 0 0 30px rgba(168,85,247,0.6), 0 0 60px rgba(217,70,239,0.3); }
-      100% { text-shadow: none; }
-    }
-
-    .em-glow-hit {
-      animation: em-glow 1.2s ease forwards;
-    }
+    /* Em glow removed — caused visible box artifact on gradient-clipped text */
 
     /* Everything else hidden until browser + headline sequence completes */
     .hero-deferred {
@@ -146,6 +137,127 @@
     .hero-deferred.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    /* CTA split animation — button starts centered, then slides left as badge slides out from right */
+    .hero-actions {
+      position: relative;
+      justify-content: center;
+    }
+
+    /* Before split: button is centered, badge is hidden behind it */
+    .hero-actions {
+      overflow: visible;
+    }
+
+    .hero-actions .btn-primary {
+      transform: translateX(calc(50% + 8px));
+      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-actions .cws-badge {
+      opacity: 0;
+      transform: translateX(-110%);
+      transition: opacity 0.15s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+      z-index: 1;
+    }
+
+    .hero-actions.split .btn-primary {
+      transform: translateX(0);
+    }
+
+    .hero-actions.split.reveal-badge .cws-badge {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Blade-edge light trace around CWS badge */
+    .hero-actions .cws-badge {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .hero-actions .cws-badge::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 11px;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0;
+      background: conic-gradient(from 270deg, transparent 0deg, transparent 360deg);
+      /* Mask to border only */
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      padding: 2px;
+    }
+
+    @keyframes blade-trace {
+      0%   {
+        opacity: 0;
+        background: conic-gradient(from 270deg,
+          transparent 0deg, rgba(168,85,247,0.3) 0deg, rgba(255,255,255,0.9) 0deg, transparent 0deg, transparent 360deg);
+      }
+      8%   {
+        opacity: 0.5;
+        background: conic-gradient(from 270deg,
+          transparent 0deg, rgba(168,85,247,0.3) 10deg, rgba(255,255,255,0.9) 30deg, transparent 30deg, transparent 360deg);
+      }
+      15%  {
+        opacity: 1;
+        background: conic-gradient(from 270deg,
+          transparent 0deg, rgba(168,85,247,0.3) 30deg, rgba(255,255,255,0.9) 55deg, transparent 55deg, transparent 360deg);
+      }
+      25%  {
+        background: conic-gradient(from 270deg,
+          transparent 20deg, rgba(168,85,247,0.3) 50deg, rgba(255,255,255,0.9) 90deg, transparent 90deg, transparent 360deg);
+      }
+      35%  {
+        background: conic-gradient(from 270deg,
+          transparent 55deg, rgba(168,85,247,0.3) 85deg, rgba(255,255,255,0.9) 126deg, transparent 126deg, transparent 360deg);
+      }
+      45%  {
+        background: conic-gradient(from 270deg,
+          transparent 90deg, rgba(168,85,247,0.3) 120deg, rgba(255,255,255,0.9) 162deg, transparent 162deg, transparent 360deg);
+      }
+      55%  {
+        background: conic-gradient(from 270deg,
+          transparent 126deg, rgba(168,85,247,0.3) 156deg, rgba(255,255,255,0.9) 198deg, transparent 198deg, transparent 360deg);
+      }
+      65%  {
+        background: conic-gradient(from 270deg,
+          transparent 162deg, rgba(168,85,247,0.3) 192deg, rgba(255,255,255,0.9) 234deg, transparent 234deg, transparent 360deg);
+      }
+      75%  {
+        background: conic-gradient(from 270deg,
+          transparent 198deg, rgba(168,85,247,0.3) 228deg, rgba(255,255,255,0.9) 270deg, transparent 270deg, transparent 360deg);
+      }
+      85%  {
+        background: conic-gradient(from 270deg,
+          transparent 234deg, rgba(168,85,247,0.3) 264deg, rgba(255,255,255,0.9) 306deg, transparent 306deg, transparent 360deg);
+      }
+      93%  {
+        opacity: 1;
+        background: conic-gradient(from 270deg,
+          transparent 280deg, rgba(168,85,247,0.3) 310deg, rgba(255,255,255,0.9) 348deg, transparent 348deg, transparent 360deg);
+      }
+      100% {
+        opacity: 0;
+        background: conic-gradient(from 270deg,
+          transparent 320deg, rgba(168,85,247,0.3) 340deg, rgba(255,255,255,0.9) 360deg, transparent 360deg, transparent 360deg);
+      }
+    }
+
+    .hero-actions.blade-glow .cws-badge::before {
+      animation: blade-trace 1.3s ease-in-out forwards;
     }
 
     /* CHROME WEB STORE BADGE */
@@ -262,6 +374,7 @@
       justify-content: center;
       gap: 16px;
       flex-wrap: wrap;
+      margin-top: 5vh;
       margin-bottom: 72px;
     }
 
@@ -803,9 +916,8 @@
       <span class="hero-line" id="hero-line-1">Your <span class="notion-word">Notion</span> CRM,</span>
       <span class="hero-line" id="hero-line-2"><em id="hero-em">inside Gmail.</em></span>
     </h1>
-    <p class="hero-sub hero-deferred">Stop switching tabs.<br />Start knowing who you're talking to.</p>
     <div class="hero-actions hero-deferred">
-      <a href="#pricing" class="btn-primary">Start for $5/month</a>
+      <a href="#pricing" class="btn-primary">Only $5/month</a>
       <a href="https://chromewebstore.google.com/detail/notion-gmail-sidebar/jbeempeigcedfdpbpiphohpjlfclkedd" class="cws-badge" target="_blank" rel="noopener">
         <img src="../google chrome-webstore-icon.png" alt="Chrome Web Store" />
         <span class="cws-badge-text"><span class="cws-badge-sub">Available in the</span><span class="cws-badge-main">Chrome Web Store</span></span>
@@ -1033,17 +1145,28 @@
         line2.classList.add('revealed');
       }, 1450);
 
-      // Step 5: Em glow hit on "inside Gmail"
-      setTimeout(function() {
-        heroEm.classList.add('em-glow-hit');
-      }, 2000);
-
-      // Step 6: Badge, subtitle, CTAs fade in
+      // Step 5: CTA button fades in centered
+      var heroActions = document.querySelector('.hero-actions');
       setTimeout(function() {
         deferred.forEach(function(el, i) {
           setTimeout(function() { el.classList.add('visible'); }, i * 120);
         });
       }, 2300);
+
+      // Step 6b: Button slides left (extra linger time while centered)
+      setTimeout(function() {
+        heroActions.classList.add('split');
+      }, 3500);
+
+      // Step 7: After button settles, badge slides out from underneath
+      setTimeout(function() {
+        heroActions.classList.add('reveal-badge');
+      }, 4300);
+
+      // Step 8: Blade-trace glow around CWS badge after it settles
+      setTimeout(function() {
+        heroActions.classList.add('blade-glow');
+      }, 5300);
     });
   </script>
 
