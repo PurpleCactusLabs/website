@@ -4,21 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Notion CRM Sidebar — Your Notion CRM, inside Gmail | Purple Cactus Labs</title>
-  <meta name="description" content="See your Notion CRM contacts, deals, and notes inside Gmail automatically. No tab-switching. Works with any Notion database. Only $5/month." />
+  <meta name="description" content="See your Notion CRM contacts, deals, and notes inside Gmail automatically. No tab-switching. Works with any Notion database. Try free for 7 days." />
   <link rel="canonical" href="https://purplecactuslabs.com/notion-gmail-sidebar/" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://purplecactuslabs.com/notion-gmail-sidebar/" />
   <meta property="og:title" content="Notion CRM Sidebar — Your Notion CRM, inside Gmail" />
-  <meta property="og:description" content="See your Notion CRM contacts, deals, and notes inside Gmail automatically. No tab-switching. Only $5/month." />
+  <meta property="og:description" content="See your Notion CRM contacts, deals, and notes inside Gmail automatically. No tab-switching. Try free for 7 days." />
   <meta property="og:image" content="https://purplecactuslabs.com/og-image-sidebar.png" />
   <meta property="og:site_name" content="Purple Cactus Labs" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Notion CRM Sidebar — Your Notion CRM, inside Gmail" />
-  <meta name="twitter:description" content="See your Notion CRM contacts, deals, and notes inside Gmail automatically. No tab-switching. Only $5/month." />
+  <meta name="twitter:description" content="See your Notion CRM contacts, deals, and notes inside Gmail automatically. No tab-switching. Try free for 7 days." />
   <meta name="twitter:image" content="https://purplecactuslabs.com/og-image-sidebar.png" />
 
   <!-- Favicon -->
@@ -809,6 +809,52 @@
       border-radius: 99px;
     }
 
+    /* Plan toggle */
+    .plan-toggle {
+      display: inline-flex;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 3px;
+      margin-bottom: 28px;
+    }
+
+    .plan-toggle button {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      position: relative;
+    }
+
+    .plan-toggle button.active {
+      background: rgba(168,85,247,0.2);
+      color: #fff;
+      border: 1px solid rgba(168,85,247,0.4);
+    }
+
+    .plan-toggle button:not(.active):hover {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .save-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--pcl-purple), var(--neon-fuchsia));
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
     .price {
       font-size: 56px;
       font-weight: 700;
@@ -826,7 +872,37 @@
     .price-period {
       color: rgba(255,255,255,0.45);
       font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    .price-effective {
+      color: var(--pcl-purple);
+      font-size: 16px;
+      font-weight: 600;
       margin-bottom: 32px;
+      min-height: 20px;
+    }
+
+    .trial-trust {
+      color: rgba(255,255,255,0.5);
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    .cws-trust {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.4);
+      font-size: 12px;
+      margin-top: 16px;
+    }
+
+    .cws-trust img {
+      height: 14px;
+      width: auto;
+      opacity: 0.5;
     }
 
     .pricing-features {
@@ -964,14 +1040,26 @@
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Chrome",
     "browserRequirements": "Google Chrome",
-    "offers": {
-      "@type": "Offer",
-      "price": "5.00",
-      "priceCurrency": "USD",
-      "priceValidUntil": "2027-12-31",
-      "availability": "https://schema.org/InStock",
-      "url": "https://buy.stripe.com/8x27sM8yX9hndrv6IocZa01"
-    },
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Monthly",
+        "price": "5.00",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2027-12-31",
+        "availability": "https://schema.org/InStock",
+        "url": "https://buy.stripe.com/8x27sM8yX9hndrv6IocZa01"
+      },
+      {
+        "@type": "Offer",
+        "name": "Yearly",
+        "price": "39.00",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2027-12-31",
+        "availability": "https://schema.org/InStock",
+        "url": "https://buy.stripe.com/6oUeVe02r65bafj0k0cZa02"
+      }
+    ],
     "publisher": {
       "@type": "Organization",
       "name": "Purple Cactus Labs",
@@ -1044,7 +1132,7 @@
       <a href="/"><img src="../PCL_neon_logo_dark.svg" alt="Purple Cactus Labs" class="nav-logo-img" /></a>
     </div>
     <div class="nav-right">
-      <a href="#pricing" class="nav-cta">Get started — $5/mo</a>
+      <a href="#pricing" class="nav-cta">Start free trial</a>
     </div>
   </nav>
 
@@ -1055,8 +1143,8 @@
       <span class="hero-line" id="hero-line-2"><em id="hero-em">inside Gmail.</em></span>
     </h1>
     <div class="hero-actions hero-deferred">
-      <a href="#pricing" class="btn-primary">Only $5/month</a>
-      <a href="https://chromewebstore.google.com/detail/notion-gmail-sidebar/jbeempeigcedfdpbpiphohpjlfclkedd" class="cws-badge" target="_blank" rel="noopener">
+      <a href="#pricing" class="btn-primary">Try free for 7 days</a>
+      <a href="#pricing" class="cws-badge">
         <img src="../google chrome-webstore-icon.png" alt="Chrome Web Store" />
         <span class="cws-badge-text"><span class="cws-badge-sub">Available in the</span><span class="cws-badge-main">Chrome Web Store</span></span>
       </a>
@@ -1165,14 +1253,13 @@
     <h2 class="section-title">Simple pricing. No surprises.</h2>
     <div class="pricing-wrap">
       <div class="pricing-card">
-        <div class="price"><sup>$</sup>5</div>
-        <div class="price-period">per month · cancel anytime</div>
-        <div class="cws-badge-wrap" style="margin-top: 24px; margin-bottom: 28px;">
-          <a href="https://chromewebstore.google.com/detail/notion-gmail-sidebar/jbeempeigcedfdpbpiphohpjlfclkedd" class="cws-badge" target="_blank" rel="noopener">
-            <img src="../google chrome-webstore-icon.png" alt="Chrome Web Store" />
-            <span class="cws-badge-text"><span class="cws-badge-sub">Available in the</span><span class="cws-badge-main">Chrome Web Store</span></span>
-          </a>
+        <div class="plan-toggle">
+          <button data-plan="monthly" onclick="switchPlan('monthly')">Monthly</button>
+          <button class="active" data-plan="yearly" onclick="switchPlan('yearly')">Yearly <span class="save-badge">Save 35%</span></button>
         </div>
+        <div class="price" id="pricing-amount"><sup>$</sup>39</div>
+        <div class="price-period" id="pricing-period">per year</div>
+        <div class="price-effective" id="pricing-effective">That's just $3.25/mo</div>
         <ul class="pricing-features">
           <li>Notion CRM Sidebar Chrome extension</li>
           <li>Connect any Notion database</li>
@@ -1181,7 +1268,9 @@
           <li>Instant email lookup</li>
           <li>License key delivered by email</li>
         </ul>
-        <a href="https://buy.stripe.com/8x27sM8yX9hndrv6IocZa01" class="btn-primary" style="display:block; text-align:center;">Get started</a>
+        <a href="https://buy.stripe.com/6oUeVe02r65bafj0k0cZa02" id="pricing-cta" class="btn-primary" style="display:block; text-align:center;">Start free trial</a>
+        <p class="trial-trust">No charge for 7 days. Cancel anytime.</p>
+        <p class="cws-trust"><img src="../google chrome-webstore-icon.png" alt="" /> Official Chrome Web Store extension</p>
         <a href="mailto:hello@purplecactus.io" class="manage-link">Already a customer? Email us to manage your subscription →</a>
       </div>
     </div>
@@ -1220,8 +1309,8 @@
   <!-- FOOTER CTA -->
   <div class="footer-cta">
     <h2>Stop switching tabs.<br />Start knowing who you're talking to.</h2>
-    <p>$5/month. Set up in 5 minutes. Cancel anytime.</p>
-    <a href="https://buy.stripe.com/8x27sM8yX9hndrv6IocZa01" class="btn-primary">Get started →</a>
+    <p>Try free for 7 days. Plans from $3.25/mo.</p>
+    <a href="#pricing" class="btn-primary">Start free trial →</a>
   </div>
 
   <!-- FOOTER -->
@@ -1306,6 +1395,31 @@
         heroActions.classList.add('blade-glow');
       }, 5000);
     });
+
+    // Plan toggle
+    function switchPlan(plan) {
+      var amount = document.getElementById('pricing-amount');
+      var period = document.getElementById('pricing-period');
+      var effective = document.getElementById('pricing-effective');
+      var cta = document.getElementById('pricing-cta');
+      var buttons = document.querySelectorAll('.plan-toggle button');
+
+      buttons.forEach(function(btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-plan') === plan);
+      });
+
+      if (plan === 'yearly') {
+        amount.innerHTML = '<sup>$</sup>39';
+        period.textContent = 'per year';
+        effective.textContent = 'That\u0027s just $3.25/mo';
+        cta.href = 'https://buy.stripe.com/6oUeVe02r65bafj0k0cZa02';
+      } else {
+        amount.innerHTML = '<sup>$</sup>5';
+        period.textContent = 'per month';
+        effective.innerHTML = '&nbsp;';
+        cta.href = 'https://buy.stripe.com/8x27sM8yX9hndrv6IocZa01';
+      }
+    }
   </script>
 
 </body>
