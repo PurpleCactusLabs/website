@@ -3,8 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Notion CRM Sidebar — Your CRM, inside Gmail</title>
-  <meta name="description" content="See your Notion CRM data instantly, without leaving Gmail. $5/month." />
+  <title>Notion CRM Sidebar — Your Notion CRM, inside Gmail | Purple Cactus Labs</title>
+  <meta name="description" content="See your Notion CRM contacts, deals, and notes inside Gmail automatically. No tab-switching. Works with any Notion database. Only $5/month." />
+  <link rel="canonical" href="https://purplecactuslabs.com/notion-gmail-sidebar/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://purplecactuslabs.com/notion-gmail-sidebar/" />
+  <meta property="og:title" content="Notion CRM Sidebar — Your Notion CRM, inside Gmail" />
+  <meta property="og:description" content="See your Notion CRM contacts, deals, and notes inside Gmail automatically. No tab-switching. Only $5/month." />
+  <meta property="og:image" content="https://purplecactuslabs.com/og-image-sidebar.png" />
+  <meta property="og:site_name" content="Purple Cactus Labs" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Notion CRM Sidebar — Your Notion CRM, inside Gmail" />
+  <meta name="twitter:description" content="See your Notion CRM contacts, deals, and notes inside Gmail automatically. No tab-switching. Only $5/month." />
+  <meta name="twitter:image" content="https://purplecactuslabs.com/og-image-sidebar.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/PCL_neon_logo_dark.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
@@ -932,6 +952,84 @@
       .hero-browser { transform: none; }
     }
   </style>
+
+  <!-- Structured Data: Product -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Notion CRM Sidebar",
+    "description": "Chrome extension that surfaces your Notion CRM data inside Gmail automatically. See contacts, deals, and notes without switching tabs.",
+    "url": "https://purplecactuslabs.com/notion-gmail-sidebar/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Chrome",
+    "browserRequirements": "Google Chrome",
+    "offers": {
+      "@type": "Offer",
+      "price": "5.00",
+      "priceCurrency": "USD",
+      "priceValidUntil": "2027-12-31",
+      "availability": "https://schema.org/InStock",
+      "url": "https://buy.stripe.com/8x27sM8yX9hndrv6IocZa01"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Purple Cactus Labs",
+      "url": "https://purplecactuslabs.com"
+    },
+    "installUrl": "https://chromewebstore.google.com/detail/notion-gmail-sidebar/jbeempeigcedfdpbpiphohpjlfclkedd"
+  }
+  </script>
+
+  <!-- Structured Data: FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does this work with any Notion database?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. As long as your database has an email property, the sidebar can match contacts from Gmail. You pick which database and which fields to display during setup."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my Notion data secure?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Your Notion API token is stored locally in your browser using Chrome's secure storage. It never passes through our servers — lookups happen directly from your browser to Notion's API."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to be technical to set it up?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The setup wizard walks you through connecting your Notion workspace and picking your fields. It takes about 5 minutes and requires no coding."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens if a contact isn't in my Notion database?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The sidebar stays out of your way. It only appears when it finds a matching record — no noise for unrecognized senders."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I cancel anytime?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes — no lock-ins, no cancellation fees. Just email us at hello@purplecactus.io and we'll take care of it same day."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
