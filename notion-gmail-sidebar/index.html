@@ -201,63 +201,103 @@
     }
 
     @keyframes blade-trace {
+      /* Fade in */
       0%   {
         opacity: 0;
         background: conic-gradient(from 270deg,
           transparent 0deg, rgba(168,85,247,0.3) 0deg, rgba(255,255,255,0.9) 0deg, transparent 0deg, transparent 360deg);
       }
+      4%   {
+        opacity: 0.3;
+        background: conic-gradient(from 270deg,
+          transparent 0deg, rgba(168,85,247,0.3) 8deg, rgba(255,255,255,0.9) 24deg, transparent 24deg, transparent 360deg);
+      }
       8%   {
-        opacity: 0.5;
+        opacity: 0.7;
         background: conic-gradient(from 270deg,
-          transparent 0deg, rgba(168,85,247,0.3) 10deg, rgba(255,255,255,0.9) 30deg, transparent 30deg, transparent 360deg);
+          transparent 0deg, rgba(168,85,247,0.3) 24deg, rgba(255,255,255,0.9) 48deg, transparent 48deg, transparent 360deg);
       }
-      15%  {
+      12%  {
         opacity: 1;
         background: conic-gradient(from 270deg,
-          transparent 0deg, rgba(168,85,247,0.3) 30deg, rgba(255,255,255,0.9) 55deg, transparent 55deg, transparent 360deg);
+          transparent 0deg, rgba(168,85,247,0.3) 40deg, rgba(255,255,255,0.9) 72deg, transparent 72deg, transparent 360deg);
       }
-      25%  {
+      /* Full speed — first lap */
+      18%  {
         background: conic-gradient(from 270deg,
-          transparent 20deg, rgba(168,85,247,0.3) 50deg, rgba(255,255,255,0.9) 90deg, transparent 90deg, transparent 360deg);
+          transparent 30deg, rgba(168,85,247,0.3) 65deg, rgba(255,255,255,0.9) 112deg, transparent 112deg, transparent 360deg);
       }
-      35%  {
+      24%  {
         background: conic-gradient(from 270deg,
-          transparent 55deg, rgba(168,85,247,0.3) 85deg, rgba(255,255,255,0.9) 126deg, transparent 126deg, transparent 360deg);
+          transparent 72deg, rgba(168,85,247,0.3) 107deg, rgba(255,255,255,0.9) 152deg, transparent 152deg, transparent 360deg);
       }
-      45%  {
+      30%  {
         background: conic-gradient(from 270deg,
-          transparent 90deg, rgba(168,85,247,0.3) 120deg, rgba(255,255,255,0.9) 162deg, transparent 162deg, transparent 360deg);
+          transparent 112deg, rgba(168,85,247,0.3) 147deg, rgba(255,255,255,0.9) 192deg, transparent 192deg, transparent 360deg);
       }
-      55%  {
+      36%  {
         background: conic-gradient(from 270deg,
-          transparent 126deg, rgba(168,85,247,0.3) 156deg, rgba(255,255,255,0.9) 198deg, transparent 198deg, transparent 360deg);
+          transparent 152deg, rgba(168,85,247,0.3) 187deg, rgba(255,255,255,0.9) 232deg, transparent 232deg, transparent 360deg);
       }
-      65%  {
+      42%  {
         background: conic-gradient(from 270deg,
-          transparent 162deg, rgba(168,85,247,0.3) 192deg, rgba(255,255,255,0.9) 234deg, transparent 234deg, transparent 360deg);
+          transparent 192deg, rgba(168,85,247,0.3) 227deg, rgba(255,255,255,0.9) 272deg, transparent 272deg, transparent 360deg);
       }
-      75%  {
-        background: conic-gradient(from 270deg,
-          transparent 198deg, rgba(168,85,247,0.3) 228deg, rgba(255,255,255,0.9) 270deg, transparent 270deg, transparent 360deg);
-      }
-      85%  {
-        background: conic-gradient(from 270deg,
-          transparent 234deg, rgba(168,85,247,0.3) 264deg, rgba(255,255,255,0.9) 306deg, transparent 306deg, transparent 360deg);
-      }
-      93%  {
+      48%  {
         opacity: 1;
         background: conic-gradient(from 270deg,
-          transparent 280deg, rgba(168,85,247,0.3) 310deg, rgba(255,255,255,0.9) 348deg, transparent 348deg, transparent 360deg);
+          transparent 232deg, rgba(168,85,247,0.3) 267deg, rgba(255,255,255,0.9) 312deg, transparent 312deg, transparent 360deg);
+      }
+      /* Overshoot — same speed, gradual fade */
+      54%  {
+        opacity: 1;
+        background: conic-gradient(from 290deg,
+          transparent 244deg, rgba(168,85,247,0.3) 279deg, rgba(255,255,255,0.9) 324deg, transparent 324deg, transparent 360deg);
+      }
+      60%  {
+        opacity: 0.95;
+        background: conic-gradient(from 320deg,
+          transparent 236deg, rgba(168,85,247,0.3) 271deg, rgba(255,255,255,0.9) 316deg, transparent 316deg, transparent 360deg);
+      }
+      66%  {
+        opacity: 0.85;
+        background: conic-gradient(from 350deg,
+          transparent 228deg, rgba(168,85,247,0.3) 263deg, rgba(255,255,255,0.9) 308deg, transparent 308deg, transparent 360deg);
+      }
+      72%  {
+        opacity: 0.75;
+        background: conic-gradient(from 20deg,
+          transparent 220deg, rgba(168,85,247,0.3) 255deg, rgba(255,255,255,0.9) 300deg, transparent 300deg, transparent 360deg);
+      }
+      78%  {
+        opacity: 0.6;
+        background: conic-gradient(from 50deg,
+          transparent 212deg, rgba(168,85,247,0.3) 247deg, rgba(255,255,255,0.9) 292deg, transparent 292deg, transparent 360deg);
+      }
+      84%  {
+        opacity: 0.45;
+        background: conic-gradient(from 80deg,
+          transparent 204deg, rgba(168,85,247,0.3) 239deg, rgba(255,255,255,0.9) 284deg, transparent 284deg, transparent 360deg);
+      }
+      90%  {
+        opacity: 0.3;
+        background: conic-gradient(from 110deg,
+          transparent 196deg, rgba(168,85,247,0.3) 231deg, rgba(255,255,255,0.9) 276deg, transparent 276deg, transparent 360deg);
+      }
+      96%  {
+        opacity: 0.1;
+        background: conic-gradient(from 140deg,
+          transparent 188deg, rgba(168,85,247,0.3) 223deg, rgba(255,255,255,0.9) 268deg, transparent 268deg, transparent 360deg);
       }
       100% {
         opacity: 0;
-        background: conic-gradient(from 270deg,
-          transparent 320deg, rgba(168,85,247,0.3) 340deg, rgba(255,255,255,0.9) 360deg, transparent 360deg, transparent 360deg);
+        background: conic-gradient(from 160deg,
+          transparent 184deg, rgba(168,85,247,0.3) 219deg, rgba(255,255,255,0.9) 264deg, transparent 264deg, transparent 360deg);
       }
     }
 
     .hero-actions.blade-glow .cws-badge::before {
-      animation: blade-trace 1.3s ease-in-out forwards;
+      animation: blade-trace 2.2s linear forwards;
     }
 
     /* CHROME WEB STORE BADGE */
@@ -1153,20 +1193,20 @@
         });
       }, 2300);
 
-      // Step 6b: Button slides left (extra linger time while centered)
+      // Step 6b: Button slides left
       setTimeout(function() {
         heroActions.classList.add('split');
-      }, 3500);
+      }, 3200);
 
       // Step 7: After button settles, badge slides out from underneath
       setTimeout(function() {
         heroActions.classList.add('reveal-badge');
-      }, 4300);
+      }, 4000);
 
       // Step 8: Blade-trace glow around CWS badge after it settles
       setTimeout(function() {
         heroActions.classList.add('blade-glow');
-      }, 5300);
+      }, 5000);
     });
   </script>
 
