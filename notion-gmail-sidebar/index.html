@@ -118,6 +118,44 @@
       transform: translateY(-1px);
     }
 
+    .nav-account {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      margin-left: 12px;
+      overflow: hidden;
+      transition: color 0.2s;
+    }
+
+    .nav-account:hover {
+      color: rgba(255,255,255,0.8);
+    }
+
+    .nav-account svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .nav-account span {
+      max-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0;
+      transition: max-width 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease, margin 0.35s ease;
+      margin-left: 0;
+    }
+
+    .nav-account:hover span {
+      max-width: 100px;
+      opacity: 1;
+      margin-left: 6px;
+    }
+
     /* NOTION WORD HIGHLIGHT */
     .notion-word {
       background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.85) 100%);
@@ -1133,6 +1171,13 @@
     </div>
     <div class="nav-right">
       <a href="#pricing" class="nav-cta">Start free trial</a>
+      <a href="https://account.pclabs.app" class="nav-account" title="My Account">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M20 21a8 8 0 1 0-16 0"/>
+        </svg>
+        <span>My Account</span>
+      </a>
     </div>
   </nav>
 
