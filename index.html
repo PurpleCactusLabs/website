@@ -1120,6 +1120,7 @@
     /* ── FOOTER ──────────────────────────────────────────────── */
     .footer-wrap {
       position: relative;
+      z-index: 2;
       clip-path: inset(-220px 0 0 0);
     }
 
@@ -1157,6 +1158,8 @@
       align-items: flex-end;
       transform: translateY(calc(100% - 28px));
       transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: pointer;
+      pointer-events: auto;
     }
 
     .site-cta-tab.open {
@@ -1188,6 +1191,7 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.7);
+      cursor: pointer;
     }
 
     @keyframes blink-chevron {
